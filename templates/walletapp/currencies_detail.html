@@ -1,0 +1,510 @@
+
+
+{% extends "base_generic.html" %}
+
+{% load static %}
+{% load filesize_format %}
+{% load crypto_links %}
+{% load humanize %}
+
+{% block title %}
+   {% if currencies.is_nft %}NFT{% else %}Currency{%endif%} {{ currencies.name }} {% if currencies.collection %} | {{currencies.collection.name}} {%endif%} | Tiramisu Wallet | Taproot Assets
+{% endblock %}
+
+{% block keywords %}
+   Bitcoin, Taproot, Assets, {{ currencies.name }},{% if currencies.collection %} {{currencies.collection.name}}, {%endif%} NFT, crypto, mint
+{% endblock %}
+
+{% block description %}
+   {% if currencies.is_nft %}NFT{% else %}Currency{%endif%} {{ currencies.name }}{% if currencies.collection %} from collection {{currencies.collection.name}}{%endif%}. 
+   Price change {{ currencies.price_change }}%, no. holders {{ currencies.holders_num | filesize_format }}, no. transactions {{ currencies.transaction_num | filesize_format }}, no.orders {{ currencies.orders_num | filesize_format }}.
+   {{ currencies.description }}
+{% endblock %}
+
+{% block description_twitter %}
+   {% if currencies.is_nft %}NFT{% else %}Currency{%endif%} {{ currencies.name }}{% if currencies.collection %} from collection {{currencies.collection.name}}{%endif%}. 
+   Price change {{ currencies.price_change }}%, no. holders {{ currencies.holders_num | filesize_format }}, no. transactions {{ currencies.transaction_num | filesize_format }}, no.orders {{ currencies.orders_num | filesize_format }}.
+   {{ currencies.description }}
+{% endblock %}
+
+{% block title_twitter %}
+   {% if currencies.is_nft %}NFT{% else %}Currency{%endif%} {{ currencies.name }} {% if currencies.collection %} | {{currencies.collection.name}} {%endif%} | Tiramisu Wallet | Taproot Assets
+{% endblock %}
+
+{% block image_twitter %}
+   https://mainnet.tiramisuwallet.com{{currencies.get_preview_image_url}}
+{% endblock %}
+
+{% block title_og %}
+   {% if currencies.is_nft %}NFT{% else %}Currency{%endif%} {{ currencies.name }} {% if currencies.collection %} | {{currencies.collection.name}} {%endif%} | Tiramisu Wallet | Taproot Assets
+{% endblock %}
+
+{% block description_og %}
+{% if currencies.is_nft %}NFT{% else %}Currency{%endif%} {{ currencies.name }}{% if currencies.collection %} from collection {{currencies.collection.name}}{%endif%}. 
+   Price change {{ currencies.price_change }}%, no. holders {{ currencies.holders_num | filesize_format }}, no. transactions {{ currencies.transaction_num | filesize_format }}, no.orders {{ currencies.orders_num | filesize_format }}.
+   {{ currencies.description }}
+{% endblock %}
+
+{% block image_og %}
+   https://mainnet.tiramisuwallet.com{{currencies.get_preview_image_url}}
+{% endblock %}
+
+{% block image_og_secure %}
+   https://mainnet.tiramisuwallet.com{{currencies.get_preview_image_url}}
+{% endblock %}
+
+{% block extra_head %}
+
+<link rel="stylesheet" href="{% static '/css/asset-detail.css' %}" />
+
+{% endblock %}
+
+{% block bread_crumb %}
+  {% if currencies.is_nft %}
+  <img
+    src="{% static 'assets/images/Diamond.svg' %}"
+    alt="My Wallet / Currencies"
+    width="32"
+  />
+  <h2>NFTs</h2>
+  {%else%}
+  <img
+    src="{% static 'assets/images/PurpleCoins.svg' %}"
+    alt="My Wallet / Currencies"
+    width="32"
+  />
+  <h2>Currencies</h2>
+  {%endif%}
+{% endblock %}
+
+{% block bread_crumb_2 %}
+{% if currencies.is_nft %}
+<img
+  src="{% static 'assets/images/Diamond.svg' %}"
+  alt="My Wallet / Currencies"
+  width="32"
+/>
+<h2>NFTs</h2>
+{%else%}
+<img
+  src="{% static 'assets/images/PurpleCoins.svg' %}"
+  alt="My Wallet / Currencies"
+  width="32"
+/>
+<h2>Currencies</h2>
+{%endif%}
+{% endblock %}
+
+{% block content %}
+
+<div class="asset-detail-container">
+   <h2>{{currencies.name}}</h2>
+   <div class="chart-section">
+     <div class="image-container">
+      <img src="{{currencies.get_image_url_name_large}}" alt="Asset image" width=300>
+     </div>
+     {% if not currencies.is_nft %}
+
+     <div id="ChartContainerDesktop" class="asset-chart" style="height: 350px; width:1200px; border-radius:15px; overflow: hidden;">
+       
+       {% include 'price_chart.html' with listings=currencies.get_lp_listing period='1h' target_element='ChartContainerDesktop'%}
+       
+    </div>
+    {%endif%}
+   </div>
+   <div class="actions-section">
+
+
+      {% if not currencies.is_nft %}
+      <div id="ChartContainerMobile" class="responsive-chart" style="height: 350px; width:100%; border-radius:15px; overflow: hidden;">
+        {% include 'price_chart.html' with listings=currencies.get_lp_listing period='1h' target_element='ChartContainerMobile'%}
+     </div>
+     {%endif%}
+
+      <div class="second-actions">
+        <button class="btn">
+          <img src="{% static 'assets/images/BlueDownArrow.svg' %}" alt="Arrow Down" width="36">
+          <h3>BUY LP</h3>
+        </button>
+        <button class="btn">
+          <img src="{% static 'assets/images/BlueDownArrow.svg' %}" alt="Arrow Down" width="36">
+          <h3>SELL LP</h3>
+        </button>
+      </div>
+
+      <div class="first-actions">
+         <div class="social-icons">
+           <img src="{% static 'assets/images/PurpleTwitter.svg' %}" alt="Twitter">
+           <img src="{% static 'assets/images/PurpleFacebook.svg' %}" alt="Facebook">
+           <img src="{% static 'assets/images/PurpleLinkedin.svg' %}" alt="LinkedIn">
+         </div>
+       </div>
+
+    </div>
+   <div class="details-section">
+      <div class="detail-item">
+        <h3>Asset Name:</h3>
+        <p>{{ currencies.name }}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Asset Type:</h3>
+        {% if currencies.is_nft %}
+        <p><img src="{% static 'assets/images/Diamond.svg' %}" alt="Diamond" width="18"> NFT</p>
+        {%else%}
+        <p><img src="{% static 'assets/images/Coins.svg' %}" alt="Diamond" width="18"> Currency</p>
+        {%endif%}
+      </div>
+      <div class="detail-item">
+        <h3>Currency Acronym:</h3>
+        <p>{{ currencies.acronym }}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Total Supply:</h3>
+        <p>{{ currencies.supply }}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Minting Transaction:</h3>
+        <div class="item-id">
+          <span style="word-wrap: break-word; max-width: 200px">{{currencies.minting_transaction.tx_id}}</span>
+          <a href={{currencies.minting_transaction.tx_id | get_link_from_txid}}>
+            <img src="{% static 'assets/images/Mint.svg' %}" alt="Mint" width="16">
+          </a>
+        </div>
+      </div>
+      <div class="detail-item">
+        <h3>Asset ID:</h3>
+        <div class="item-id">
+          <span style="word-wrap: break-word; max-width: 200px">{{currencies.asset_id}}</span>
+          <a id="copy_asset_id_button" href=""><img src="{% static 'assets/images/WhiteCopy.svg' %}" alt="Copy" width="16"></a>
+        </div>
+
+        <script type="text/javascript">
+           document.getElementById("copy_asset_id_button").onclick = function(){
+             if(copyContent('{{currencies.asset_id}}')){
+                 return false;
+             }
+           }
+         </script>
+
+        
+      </div>
+      <div class="detail-item">
+        <h3>Create Date:</h3>
+        <p>{{currencies.minting_transaction.created_timestamp}}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Currency Description:</h3>
+        <p>{{currencies.description}}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Volume traded in past hour:</h3>
+        <p>{{currencies.volume}}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Number of transactions in past hour:</h3>
+        <p>{{currencies.transaction_num}}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Number of holders on Tiramisu:</h3>
+        <p>{{currencies.holders_num}}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Liquidity Pool:</h3>
+        <p>{{currencies.get_lp_listing.get_lp_btc}} BTC / {{currencies.get_lp_listing.get_lp_curr}} {{ currencies.acronym }}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Current Price:</h3>
+        <p>
+           {% if currencies.get_lp_listing %}
+           {{ currencies.get_lp_listing.get_price_sat|floatformat:4|intcomma }} SAT
+           {% else %}
+           Unknown
+           {% endif %}
+        </p>
+      </div>
+      <div class="detail-item">
+        <h3>Market Cap Estimate:</h3>
+        <p>               
+           {% if currencies.get_market_cap %}
+           {{ currencies.get_market_cap |floatformat:4|intcomma  }} SAT 
+           {% else %}
+           Unknown
+           {% endif %}
+        </p>
+        
+      </div>
+    </div>
+
+   
+ </div>
+
+
+{% comment %} 
+<div class="wallet-bradcrumb">
+
+   {% if currencies.collection %}
+   <h2><i class="fas fa-coins"></i>{% if currencies.is_nft %}<a href="{% url 'currencies-nfts' %}">NFTs</a>{% else %}<a href="{% url 'currencies' %}">Currencies</a>{%endif%}  / <a href="{{currencies.collection.get_absolute_url}}">{{ currencies.collection.name }}</a> / {{ currencies.name }} </h2>
+   {%else%}
+   <h2><i class="fas fa-coins"></i>{% if currencies.is_nft %}<a href="{% url 'currencies-nfts' %}">NFTs</a>{% else %}<a href="{% url 'currencies' %}">Currencies</a>{%endif%} /  {{ currencies.name }} </h2>
+   {%endif%}
+
+  
+</div>
+
+<div class="profile-page-area clearfix">
+
+   <div class="profile-page-area-main">
+      <div class="profile-information">
+         <div class="editprofile-images">
+            <div class="edit-images">
+               <img src="{{currencies.get_image_url_name_large}}" onerror="this.onerror=null; this.src='{% static 'assets/images/unknown_currency.png' %}'" alt="{{currencies.name}} currency">
+               
+            </div>
+         </div>
+      </div>
+      <div class="profile-information-right">
+         <div class="profile-information-box">
+            
+            <div class="theme-input-box">
+               <label>Asset name</label>
+               <p>{{ currencies.name }}</p>
+            </div>
+
+            <div class="theme-input-box">
+               <label>Asset type</label>
+               {% if currencies.is_nft %}
+               <p><i class="fas fa-gem"></i> NFT</p>
+               {%else%}
+               <p><i class="fas fa-coins"></i> Currency</p>
+               {%endif%}
+            </div>
+
+            <div class="theme-input-box">
+               <label>Currency acronym</label>
+               <p>{{ currencies.acronym }}</p>
+            </div>
+
+            {% if not currencies.is_nft %}
+            <div class="theme-input-box">
+               <label>Total supply</label>
+               <p>{{ currencies.supply }}</p>
+            </div>
+            {%endif%}
+            
+            {% if currencies.name != 'Bitcoin' %}
+
+            <div class="theme-input-box">
+               <label>Minting transaction</label>
+               <div style="word-wrap: break-word; max-width: 300px">
+                  <input type="" name="" value="{{ currencies.minting_transaction.tx_id }}" disabled=""><a href="https://live.blockcypher.com/btc/tx/{{ currencies.minting_transaction.tx_id }}/"><i class="fas fa-external-link-alt" data-original-title="" title=""></i></a>
+               </div>
+            </div>
+
+            <div class="theme-input-box">
+               <label>Creation date</label>
+               <p>{{ currencies.minting_transaction.created_timestamp }}</p>
+            </div>
+            
+            <div class="theme-input-box">
+               <label>Asset Id</label>
+               <div style="word-wrap: break-word; max-width: 300px">
+                  <input type="" name="" value="{{currencies.asset_id}}" disabled=""><a href=""><i id="copy_asset_id_button_{{currencies.id}}" data-clipboard-text="MgzB63dVsdbshsbhsbsbhsbsdhsdhvs" class="far fa-copy" data-original-title="" title=""></i></a>
+               </div>
+               
+               <script type="text/javascript">
+                  document.getElementById("copy_asset_id_button_{{currencies.id}}").onclick = function(){
+                    if(copyContent('{{currencies.asset_id}}')){
+                        // most important step in this whole process
+                        return false;
+                    }
+                  }
+                </script>
+
+            </div>
+
+            <div class="theme-input-box">
+               <label>Currency description:</label>
+               <div style="word-wrap: break-word; max-width: 300px">
+                  <p>{{ currencies.description }}</p>
+               </div>
+            </div>
+
+            <div class="theme-input-box">
+               <label>Volume traded in past hour</label>
+             <p>{{ currencies.volume}} {{currencies.acronym}} </p>
+            </div>
+
+            <div class="theme-input-box">
+               <label>Number of transactions in past hour</label>
+             <p>{{ currencies.transaction_num}} </p>
+            </div>
+
+            <div class="theme-input-box">
+               <label>Number of holders on Tiramisu</label>
+             <p>{{ currencies.holders_num}} </p>
+            </div>
+
+            {% if currencies.get_lp_listing %}
+   
+            <div class="theme-input-box">
+               <label>Liquidity pool</label>
+             <p>{{ currencies.get_lp_listing.get_lp_btc }} SAT / {{ currencies.get_lp_listing.get_lp_curr }} {{ currencies.get_lp_listing.currency.acronym }} </p>
+            </div>
+   
+            <div class="theme-input-box">
+               <label>Current price</label>
+             <p>{{ currencies.get_lp_listing.get_price_sat|floatformat:4|intcomma }} SAT </p>
+            </div>
+
+            <div class="theme-input-box">
+               <label>Market cap estimate</label>
+             <p>
+               {% if currencies.get_market_cap %}
+               {{ currencies.get_market_cap }} SAT 
+               {% else %}
+               Unknown
+               {% endif %}
+            </p>
+            </div>
+
+            <div class="theme-input-box">
+               <p>
+               <a class="theme-btn" href="{% url 'buy-currency-asset' %}?currency={{currencies.name}}"> <i class="fas fa-arrow-alt-circle-down"></i>Buy LP</a>
+            
+            </div>
+            {% if not currencies.is_nft %}
+            <div class="theme-input-box">
+               <p>
+               <a class="theme-btn" href="{% url 'sell-taro-asset' %}?currency={{currencies.name}}"> <i class="fas fa-arrow-alt-circle-up"></i> Sell LP</a>
+            </p>
+            </div>
+            {%endif%}
+
+            {%endif%}
+
+            {% if currencies.is_nft %}
+            <div class="theme-input-box">
+               <p>
+               <a class="theme-btn" href="{% url 'listing-currency-order-nft-create' %}?currency={{currencies.name}}"> <i class="fas fa-arrow-alt-circle-down"></i>Bid</a>
+            </p>
+            </div>
+
+            {%else%}
+
+            <div class="theme-input-box">
+               <p>
+               <a class="theme-btn" href="{% url 'listing-currency-order-create' %}?currency={{currencies.name}}&type=order_bid"> <i class="fas fa-arrow-alt-circle-down"></i>Bid</a>
+            </p>
+            </div>
+
+            <div class="theme-input-box">
+               <p>
+               <a class="theme-btn" href="{% url 'listing-currency-order-create' %}?currency={{currencies.name}}&type=order_ask"> <i class="fas fa-arrow-alt-circle-up"></i> Ask</a>
+            </p>
+            </div>
+            {%endif%}
+
+            
+            {% if currencies.get_nft_listing %}
+   
+            <div class="theme-input-box">
+               <label>Current price</label>
+             <p>{{ currencies.get_nft_listing.get_price_sat|floatformat:4|intcomma }} SAT </p>
+            </div>
+            
+            <div class="theme-input-box">
+               <a class="theme-btn" href="{% url 'buy-currency-asset' %}?currency={{listings.currency.name}}"> <i class="fas fa-arrow-alt-circle-down"></i>Buy</a>
+            </div>
+
+            {%endif%}
+            {% endif %}
+         </div>
+
+         <div class="pagination-box text-right">
+            <ul class="clearfix">
+               {% url 'currency-detail-public' pk=currencies.id as public_curr_url %}
+
+               <li class="current"> <span> <a href="https://twitter.com/intent/tweet?text={{"#"|add:currencies.name|add:" - minted on #Taprootassets Protocol on #BTC blockchain. https://mainnet.tiramisuwallet.com"|add:public_curr_url|urlencode}}"><i class="fab fa-twitter" style="color: white;"></i></a> </span></li>
+               
+               <li class="current"> <span> <a href="https://www.linkedin.com/sharing/share-offsite/?url={{"https://mainnet.tiramisuwallet.com"|add:public_curr_url|urlencode}}"><i class="fab fa-linkedin-in" style="color: white;"></i></a> </span></li>
+               
+               <li class="current"> <span> <a href="https://www.facebook.com/sharer/sharer.php?u={{"https://mainnet.tiramisuwallet.com"|add:public_curr_url|urlencode}}"><i class="fab fa-facebook-f" style="color: white;"></i></a> </span></li>
+
+               {% if currencies.collection %}
+
+               {% url 'public-currencies' as public_currencies_url %}
+
+               <li class="current"> <span> <a href="https://twitter.com/intent/tweet?text={{"#"|add:currencies.collection.name|add:" collection - minted on #Taprootassets Protocol on #BTC blockchain with #TiramisuWallet. https://mainnet.tiramisuwallet.com"|add:public_currencies_url|urlencode}}?collection={{currencies.collection.name}}"><i class="fas fa-images" style="color: white;"></i></a> </span></li>
+               
+               <li class="current"> <span> <a href="https://mainnet.tiramisuwallet.com{{ currencies.collection.get_preview_image_gif_url }}"><i class="fas fa-play-circle" style="color: white;"></i></a> </span></li>
+               
+               {% endif %}
+
+            </ul>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+{% if currencies.get_lp_listing and not currencies.is_nft %}
+<br>
+
+<div class="wallet-chart">
+   <div id="chart">
+      <div id="timeline-chart">
+         <div style="height: 400px;">
+            <div class="top2">
+
+               <div id="ranges" class="dashboard-chart-range buttons mb-2">
+               Range: 
+               <a id="1d" href="{% url 'currency-detail' pk=currencies.id %}?period=1m" {% if period == '1m' %}class="active"{%endif%} >1d</a>
+               <a id="1w" href="{% url 'currency-detail' pk=currencies.id %}?period=1h" {% if period == '1h' %}class="active"{%endif%} >1w</a>
+               <a id="1y" href="{% url 'currency-detail' pk=currencies.id %}?period=1d" {% if period == '1d' %}class="active"{%endif%} >1y</a>
+            </div>
+
+               <div class="buttons">
+                  <a href="#BTC/USDT:2d:avg" id="average-button"></a>
+               </div>
+            </div>
+            <div id="noDataWarning" style="display: none;"></div>
+            <div id="ChartContainer" style="height: 350px; width: 1000;">
+               {% include 'price_chart.html' with listings=currencies.get_lp_listing period=period %}
+            </div>
+         </div>
+      </div>
+   </div>
+
+</div> 
+{%endif%}
+
+
+
+{% if currencies.get_bid_orders %}
+   <br>
+   <div class="wallet-transaction clearfix">
+      <a href="#bids"><h2 class="dashboard-title">Bids</h2></a>
+      {% include 'inc_order.html' with orders=currencies.get_bid_orders %}
+      <a href="{% url 'orders-bids' currency_pk=currencies.pk %}"><p>See all bids on {{currencies.name}}...</p></a>
+   </div>
+   
+   {% endif %}
+
+
+   {% if currencies.get_ask_orders %}
+   <br>
+   <div class="wallet-transaction clearfix">
+      <a href="#asks"><h2 class="dashboard-title">Asks</h2></a>
+      {% include 'inc_order.html' with orders=currencies.get_ask_orders %}
+      <a href="{% url 'orders-asks' currency_pk=currencies.pk %}"><p>See all asks for {{currencies.name}}...</p></a>
+      {% endif %}
+   </div>
+
+ {% endcomment %}
+
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'assets/js/asset-detail.js' %}"></script>
+{% endblock %}

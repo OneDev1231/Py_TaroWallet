@@ -1,0 +1,48 @@
+{% load static %}
+{% load humanize %}
+
+<div class="card">
+    <div class="img-container" style="padding: 5%; display: block;">
+        <a href="{{balance.currency.get_absolute_url}}">
+            <img src="{{balance.currency.get_image_url_name}}" alt="no-image" width="130">
+        </a>
+    </div>
+    <div class="card-description">
+      <a href="{{balance.currency.get_absolute_url}}">
+      <h3>{{balance.currency.name}}</h3>
+      </a>
+      {% if balance.currency.is_nft %}
+      <p><img src="{% static 'assets/images/Diamond.svg' %}" alt="NFT" width="16"></p>
+      {% else %}
+      <p>{{balance.balance}} {{balance.currency.acronym}}</p>
+      {% endif %}
+
+    </div>
+    <div class="card-actions">
+      <div class="card-contract">
+        
+        <span >{{balance.currency.asset_id | truncatechars:20}}</span>
+        <a href="">
+            <img id="copy_asset_id_button_{{balance.currency.id}}" src="{% static 'assets/images/Copy.svg' %}" alt="Copy" width="16">
+        </a>
+        <script type="text/javascript">
+            document.getElementById("copy_asset_id_button_{{balance.currency.id}}").onclick = function(){
+              if(copyContent('{{balance.currency.asset_id}}')){
+                  // most important step in this whole process
+                  return false;
+              }
+            }
+          </script>
+      </div>
+      <div class="card-buttons">
+        <button id="withdraw-btn">
+          <img src="{% static 'assets/images/Up.svg' %}" alt="Up" width="12">
+          <span>Send</span>
+        </button>
+        <button id="deposit-btn">
+          <img src="{% static 'assets/images/Down.svg' %}" alt="Down" width="12">
+          <span>Receive</span>
+        </button>
+      </div>
+    </div>
+  </div>

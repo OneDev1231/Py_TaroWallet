@@ -1,0 +1,83 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+   Tiramisu Wallet | Deposit funds
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, receive
+{% endblock %}
+
+{% block description %}
+    Deposit funds into your Tiramisu Wallet
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="wallet-bradcrumb">
+    <h2><i class="fas fa-history"></i> <a href="{% url 'transactions' %}">Transactions</a> / Receive BTC</h2>
+ </div>
+
+ <div class="tranfer-coin-box">
+
+   <div class="transfer-coin-btn">
+      <a href="{% url 'transaction-receive-btc' %}"><i class="fab fa-btc"></i>Receive BTC</a>
+      <a class="active" href="{% url 'transaction-receive-btc-lnd' %}"><i class="fas fa-bolt"></i>Receive BTC Lightning</a>
+      <a href="{% url 'transaction-receive-taro' %}"><i class="fas fa-coins"></i>Receive Taproot Asset</a>
+   </div>
+   <br>
+
+  <div class="row">
+     <div class="col-xl-7">
+        <div class="transfer-coin-left-box">
+
+           <div class="transfer-coin-content">
+              <div class="transfer-coin-content-box" id="sent-coin">
+
+                <p>
+                  Deposit Bitcoin into your wallet via Bitcoin Lightning network. This form will generate a BTC lightning invoice. 
+                </p>
+
+                {% if form.errors %}
+                    <p style="color:red">Errors identified, please fix the issues below.</p>
+                {% endif %}
+
+                <form action="{% url 'transaction-receive-btc-lnd' %}" method="post" autocomplete="off">
+                  {% csrf_token %}
+                  {% for field in form %}
+                  
+                  <div class="theme-input-box">
+                    <label>{{ field.label_tag }}</label>
+                    {{ field.errors }}
+                    {{ field }}
+                    <p>{{ field.help_text }}</p>
+                  </div>
+        
+                  {% endfor %}
+
+                  <br>
+
+                   <div class="transfer-coin-button">
+                      <button class="theme-btn">Generate invoice</button>
+                   </div>
+                   
+                </form>
+
+              </div>
+
+           </div>
+        </div>
+     </div>
+
+     <div class="col-xl-5">
+         {% include "inc_wallet_overview.html" %}
+     </div>
+   </div>
+
+  </div>
+</div>
+
+
+{% endblock %}

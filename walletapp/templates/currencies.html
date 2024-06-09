@@ -1,0 +1,224 @@
+{% extends "base_index.html" %}
+
+{% load static %}
+{% load filesize_format %}
+{% load humanize %}
+
+{% block title %}
+{% if asset_type == 'nft' %}
+{% if collection %}
+   NFT collection {{collection.name}}
+{% else %}
+   NFTs on Tiramisu
+{% endif %}
+{% else %}
+   Currencies on Tiramisu
+{% endif %}
+{% endblock %}
+
+{% block keywords %}
+   taproot, assets, protocol, tiramisu, wallet, NFTs, Bitcoin, lightning, exchange, sale
+{% endblock %}
+
+{% block description %}
+
+{% if asset_type == 'nft' %}
+{% if collection %}
+   A full list of taproot assets NFTs from the collection collection {{collection.name}}. No. holders {{ collection.holders_num | filesize_format }}, no. transactions {{ collection.transaction_num | filesize_format }}, no.orders {{ collection.orders_num | filesize_format }}. {{collection.description}}. 
+{% else %}
+   A full list of taproot assets non-fungible tokens / NFTs availeble on Tiramisu. 
+{% endif %}
+{% else %}
+   A full list of taproot assets fungible tokens / coins availeble on Tiramisu. 
+{% endif %}
+{% endblock %}
+
+{% block twitter_preview_image %}
+   {% if collection %}
+      {%if preview_type == 'gif' %}
+         https://mainnet.tiramisuwallet.com{{collection.get_preview_image_gif_url}}
+      {% else%}
+         https://mainnet.tiramisuwallet.com{{collection.get_preview_image_url}}
+      {% endif %}
+   {% else %}
+      {% static 'assets/images/currencies_preview.jpg' %}
+   {% endif %}
+{% endblock %}
+
+{% block og_preview_image %}
+   {% if collection %}
+      {%if preview_type == 'gif' %}
+         https://mainnet.tiramisuwallet.com{{collection.get_preview_image_gif_url}}
+      {% else%}
+         https://mainnet.tiramisuwallet.com{{collection.get_preview_image_url}}
+      {% endif %}
+   {% else %}
+      {% static 'assets/images/currencies_preview.jpg' %}
+   {% endif %}
+{% endblock %}
+
+{% block og_secure_url_preview_image %}
+   {% if collection %}
+      https://mainnet.tiramisuwallet.com{{collection.get_preview_image_url}}
+   {% else %}
+      {% static 'assets/images/currencies_preview.jpg' %}
+   {% endif %}
+{% endblock %}
+
+{% block title_twitter %}
+{% if asset_type == 'nft' %}
+{% if collection %}
+   NFT collection {{collection.name}}
+{% else %}
+   NFTs on Tiramisu
+{% endif %}
+{% else %}
+Currencies on Tiramisu
+{% endif %}
+{% endblock %}
+
+{% block description_twitter %}
+{% if asset_type == 'nft' %}
+   {% if collection %}
+      A full list of taproot assets NFTs from the collection collection {{collection.name}}. No. holders {{ collection.holders_num | filesize_format }}, no. transactions {{ collection.transaction_num | filesize_format }}, no.orders {{ collection.orders_num | filesize_format }}. {{collection.description}}. 
+   {% else %}
+      A full list of taproot assets non-fungible tokens / NFTs availeble on Tiramisu. 
+   {% endif %}
+{% else %}
+   A full list of taproot assets fungible tokens / coins availeble on Tiramisu. 
+{% endif %}
+{% endblock %}
+
+{% block title_og %}
+   {% if asset_type == 'nft' %}
+      {% if collection %}
+         NFT collection {{collection.name}}
+      {% else %}
+         NFTs on Tiramisu
+      {% endif %}
+   {% else %}
+      Currencies on Tiramisu
+   {% endif %}
+{% endblock %}
+
+{% block description_og %}
+   {% if asset_type == 'nft' %}
+      {% if collection %}
+         A full list of taproot assets NFTs from the collection collection {{collection.name}}. No. holders {{ collection.holders_num | filesize_format }}, no. transactions {{ collection.transaction_num | filesize_format }}, no.orders {{ collection.orders_num | filesize_format }}. {{collection.description}}. 
+      {% else %}
+         A full list of taproot assets non-fungible tokens / NFTs availeble on Tiramisu. 
+      {% endif %}
+   {% else %}
+      A full list of taproot assets fungible tokens / coins availeble on Tiramisu. 
+   {% endif %}
+{% endblock %}
+
+{% block extra_head %}
+
+{% if asset_type == 'nft' %}
+<link rel="stylesheet" href="{% static '/css/nfts.css' %}" />
+{% else %}
+<link rel="stylesheet" href="{% static '/css/currencies.css' %}" />
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+<main class="main-container">
+   {% if asset_type == 'currencies' %}
+   <section class="currencies">
+      {% else %}
+      <section class="nfts">
+      {% endif %}
+   {% if collection %}
+      <div class="nfts-text">
+         <h2 class="title">NFT collection {{collection.name}}</h2>
+         <hr class="line">
+         <div class="nfts-description">
+         <h3>NFTs in the collection {{collection.name}}</h3>
+         <p>
+            A list of taproot asset non-fungible tokens from the collection {{collection.name}} along with their prices.
+         </p>
+         </div>
+      </div>
+    {% else %}
+      {% if asset_type == 'nft' %}
+      <div class="nfts-text">
+         <h2 class="title">NFTs</h2>
+         <hr class="line">
+         <div class="nfts-description">
+         <h3>NFTs on Tiramisu</h3>
+         <p>
+            A full list of NFTs / non-fungible taproot assets tokens available
+            on Tiramisu wallet along with their details and prices.
+         </p>
+         </div>
+      </div>
+      {% else %}
+      <div class="currencies-text">
+         <h2 class="title">Currencies</h2>
+         <hr class="line">
+         <div class="currencies-description">
+            <h3>Currencies on Tiramisu</h3>
+            <p>
+            A full list of currencies / fungible taproot assets tokens
+            available on Tiramisu wallet along with their details and prices.
+            </p>
+         </div>
+      </div>
+      
+      {% endif %}
+    
+
+   {% endif %}
+     <!-- DESKTOP -->
+     <div class="card-container" id="currenciesCardContainer">
+       <!-- Card List Here -->
+     
+      {% if currencies_list %}
+
+         {% for currency in currencies_list %}
+            {% if asset_type == 'currencies' %}
+               {% include 'currencies_inc_currency_public.html' with currency=currency %}
+            {% else %}
+               {% include 'currencies_inc_nft_public.html' with currency=currency %}
+            {% endif %}
+         {% endfor %}
+      {% else %}
+         <p>There are no listings.</p>
+      {% endif %}
+     </div>
+     <!-- DESKTOP END -->
+
+     <!-- MOBILE -->
+     <div class="responsive-card-container" id="responsiveCurrenciesCardContainer">
+       <!-- Card List Here -->
+      {% if currencies_list %}
+
+         {% for currency in currencies_list %}
+            {% if asset_type == 'currencies' %}
+               {% include 'currencies_inc_currency_public_mobile.html' with currency=currency %}
+            {% else %}
+               {% include 'currencies_inc_nft_public_mobile.html' with currency=currency %}
+            {% endif %}
+         {% endfor %}
+      {% else %}
+         <p>There are no listings.</p>
+      {% endif %}
+     </div>
+     <!-- MOBILE END -->
+
+     
+     {% include 'currencies_inc_paginator.html' %}
+
+   </section>
+
+   
+
+ </main>
+
+{% endblock %}
+
+{% block footer %}
+   <script src="{% static 'assets/js/currencies.js' %}"></script>
+{% endblock %}

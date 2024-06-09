@@ -1,0 +1,68 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+   Tiramisu Wallet | Add new wallet
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, TAP
+{% endblock %}
+
+{% block description %}
+   Start selling your currency
+{% endblock %}
+
+{% block content %}
+
+<div class="wallet-bradcrumb">
+  <h2><i class="fas fa-exchange-alt"></i> <a href="{% url 'orders-my' %}">Trading</a> / List yout NFT </h2>
+  <!-- <div class="theme-color-swith">
+   <a href="JavaScript:Void(0)" onclick="changeMode()">Dark Mode</a>
+   <label class="switch">
+     <input type="checkbox" id="theme-change" >
+     <span class="slider round"></span>
+   </label>
+ </div> -->
+</div>
+
+<div class="profile-page-area clearfix">
+
+  <div class="wallet-balance-area clearfix">
+    {% include 'inc_trading_navigation.html' with sel='List NFT' %}
+    <br>
+
+  <div class="profile-page-area-main">
+    <div class="profile-information-right">
+
+      {% if form.errors %}
+        <p style="color:red">Errors identified, please fix the issues below.</p>
+      {% endif %}
+        <form action="{% url 'listing-nft-create' %}" method="post" autocomplete="off">
+
+          <p>
+            Please select the NFT you would like to list on the exchange for a fixed price and the price you would like to list it for.
+          </p>
+
+          {% csrf_token %}
+          {% for field in form %}
+
+            <div class="theme-input-box">
+              <label>{{ field.label_tag }}</label>
+              {{ field.errors }}
+              {{ field }}
+              <p>{{ field.help_text }}</p>
+            </div>
+
+          {% endfor %}
+        
+         <br>
+         <div class="profile-btn">
+            <button class="theme-btn">Offer</button>
+         </div>
+        </form>
+
+      </div>
+   </div>
+</div>
+
+{% endblock %}

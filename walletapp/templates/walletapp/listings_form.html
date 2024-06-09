@@ -1,0 +1,70 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+   Tiramisu Wallet | Add new wallet
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, TAP
+{% endblock %}
+
+{% block description %}
+   Start selling your currency
+{% endblock %}
+
+{% block content %}
+
+<div class="wallet-bradcrumb">
+  <h2><i class="fas fa-exchange-alt"></i> <a href="{% url 'orders-my' %}">Trading</a> / List your currency </h2>
+  <!-- <div class="theme-color-swith">
+   <a href="JavaScript:Void(0)" onclick="changeMode()">Dark Mode</a>
+   <label class="switch">
+     <input type="checkbox" id="theme-change" >
+     <span class="slider round"></span>
+   </label>
+ </div> -->
+</div>
+
+<div class="profile-page-area clearfix">
+
+  {% include 'inc_trading_navigation.html' with sel='Create LP' %}
+  <br>
+
+  <div class="profile-page-area-main">
+    <div class="profile-information-right">
+
+      {% if form.errors %}
+        <p style="color:red">Errors identified, please fix the issues below.</p>
+      {% endif %}
+        <form action="{% url 'listing-create' %}" method="post" autocomplete="off">  
+
+          <p>
+            Select the currency you would like to create a liquidity pool for. Note that in order
+            to create an LP for a currency you have to be the original owner of the currency. Also note that 
+            if you are the LP creator your BTC balance as well as the balance for the respective currency will become a liquidity pool for the currency.
+            The price of the currency will be determined as (your curriency balance)/(your BTC balance). 
+          </p>
+
+          {% csrf_token %}
+          {% for field in form %}
+
+            <div class="theme-input-box">
+              <label>{{ field.label_tag }}</label>
+              {{ field.errors }}
+              {{ field }}
+              <p>{{ field.help_text }}</p>
+            </div>
+
+          {% endfor %}
+        
+         <br>
+         <div class="profile-btn">
+            <button class="theme-btn">Offer</button>
+         </div>
+        </form>
+
+      </div>
+   </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% load static %}
+{% load humanize %} 
+
+{% comment %} <div class="pagination-box text-center">
+  <ul class="clearfix">
+   
+    {% if page_obj.has_previous %}
+     <li><i class="fas fa-long-arrow-alt-left"></i> <a href="?page=1{% if collection %}&collection={{collection.name}}{% endif %}">FIRST </a>   </li>
+   {% endif %}
+
+   {% if page_obj.has_previous %}
+    <li><a href="?page={{ page_obj.previous_page_number }}{% if collection %}&collection={{collection.name}}{% endif %}">{{ page_obj.previous_page_number }}</a></li>
+   {% endif %}
+  
+   <li class="current"><span>{{ page_obj.number }}</span></li>
+   
+   {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}{% if collection %}&collection={{collection.name}}{% endif %}">{{ page_obj.next_page_number }}</a></li>
+        <li><a href="?page={{ page_obj.paginator.num_pages }}{% if collection %}&collection={{collection.name}}{% endif %}">LAST </a> <i class="fas fa-long-arrow-alt-right"></i> </li>
+   {% endif %}
+
+  </ul>
+</div> {% endcomment %}
+
+<div class="page-selector">
+  {% if page_obj.has_previous %}
+  <a id="prevBtn" href="?page=1{% if asset_type %}&asset_type={{asset_type}}{% endif %}{% if collection %}&collection={{collection.name}}{% endif %}">
+    <img src="{% static 'assets/images/ArrowLeft.svg' %}" alt="Previous" width="10">
+    First
+  </a>
+  <a id="nextBtn" href="?page={{ page_obj.previous_page_number }}{% if asset_type %}&asset_type={{asset_type}}{% endif %}{% if collection %}&collection={{collection.name}}{% endif %}">
+    <div class="page-number" id="pageNumber" >{{ page_obj.previous_page_number }}</div>
+  </a>
+  {% endif %}
+
+  <div class="page-number-selected" id="pageNumber">{{ page_obj.number }}</div>
+
+  {% if page_obj.has_next %}
+  <a id="nextBtn" href="?page={{ page_obj.next_page_number }}{% if asset_type %}&asset_type={{asset_type}}{% endif %}{% if collection %}&collection={{collection.name}}{% endif %}">
+    <div class="page-number" id="pageNumber">{{ page_obj.next_page_number }}</div>
+  </a>
+
+  <a id="nextBtn" href="?page={{ page_obj.paginator.num_pages }}{% if asset_type %}&asset_type={{asset_type}}{% endif %}{% if collection %}&collection={{collection.name}}{% endif %}">
+    Last
+    <img src="{% static 'assets/images/ArrowRight.svg' %}" alt="Next" width="10">
+  </a>
+  {% endif %}
+
+</div>

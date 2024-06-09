@@ -1,0 +1,27 @@
+{% load static %}
+{% load humanize %}
+
+<!-- Buttons -->
+<div class="btn-container" id="sectionSelector">
+    <button onclick="location.href='{% url 'currencies' %}'" {%if sel == 'currencies' %} class="btn" {%else%} class="outline-btn" {%endif%} >
+      <img src="{% static 'assets/images/Coins.svg' %}" alt="Currencies" width="32">
+      <h3>Currencies</h3>
+    </button>
+    <button onclick="location.href='{% url 'collections' %}'"  {%if sel == 'collections' %} class="btn" {%else%} class="outline-btn" {%endif%}>
+      <img src="{% static 'assets/images/Collections.svg' %}" alt="NFT Collections" width="26">
+      <h3>NFT Collections</h3>
+    </button>
+    <button onclick="location.href='{% url 'currencies-nfts' %}'" {%if sel == 'currencies-nfts' %} class="btn" {%else%} class="outline-btn" {%endif%} >
+      <img src="{% static 'assets/images/Diamond.svg' %}" alt="All NFTs" width="32">
+      <h3>All NFTs</h3>
+    </button>
+  </div>
+
+  <!-- Custom Select -->
+  <div class="custom-select-container">
+    <select id="sectionSelector" onchange="location = this.value;">
+      <option value="{% url 'currencies' %}">Currencies</option>
+      <option value="{% url 'collections' %}" selected>NFT Collections</option>
+      <option value="{% url 'currencies-nfts' %}">All NFTs</option>
+    </select>
+  </div>

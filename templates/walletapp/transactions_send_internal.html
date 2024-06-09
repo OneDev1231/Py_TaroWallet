@@ -1,0 +1,87 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+   Tiramisu Wallet | Deposit funds
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Asset Protocol, send, withdraw
+{% endblock %}
+
+{% block description %}
+    Withdraw funds from your Tiramisu Wallet
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+   <div class="wallet-bradcrumb">
+    <h2><i class="fas fa-history"></i> <a href="{% url 'transactions' %}">Transactions</a> / Send to user</h2>
+ </div>
+
+ <div class="tranfer-coin-box">
+
+   <div class="transfer-coin-btn">
+      <a href="{% url 'transaction-send-taro' %}"><i class="fas fa-coins"></i>Send Taproot Assets</a>
+      <a href="{% url 'transaction-send-btc' %}"><i class="fab fa-btc"></i>Send BTC</a>
+      <a href="{% url 'transaction-send-btc-lnd' %}"><i class="fas fa-bolt"></i>Send BTC Lightning</a>
+      <a class="active" href="{% url 'transaction-send-internal' %}"><i class="fas fa-user-alt"></i>Send to user</a>
+   </div>
+   <br>
+
+
+   <div class="row">
+      <div class="col-xl-7">
+         <div class="transfer-coin-left-box">
+ 
+            <div class="transfer-coin-content">
+               <div class="transfer-coin-content-box" id="sent-coin">
+ 
+                  <p>
+                     Send funds to another user of Tiramisu Wallet. Please enter the currency, destination user and the amount to send.
+                   </p>
+                     
+                     {% if form.errors %}
+                     <p style="color:red">Errors identified, please fix the issues below.</p>
+                  {% endif %}
+                     <form action="{% url 'transaction-send-internal' %}" method="post" autocomplete="off">
+                     {% csrf_token %}
+                        
+                     {% for field in form %}
+   
+                     <div class="theme-input-box">
+                        <label>{{ field.label_tag }}</label>
+                        {{ field.errors }}
+                        {{ field }}
+                        <p>{{ field.help_text }}</p>
+                        </div>
+            
+                     {% endfor %}
+                     <br>
+   
+                        <div class="transfer-coin-button">
+                           <button class="theme-btn">Send funds</button>
+                        </div>
+                        
+                     </form>
+ 
+               </div>
+ 
+            </div>
+         </div>
+      </div>
+ 
+      <div class="col-xl-5">
+         {% include "inc_wallet_overview.html" %}
+      </div>
+   </div>
+
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+   {{ form.media }}
+{% endblock %}

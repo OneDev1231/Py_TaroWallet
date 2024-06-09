@@ -1,0 +1,22 @@
+
+{% load static %}
+
+<div class="wallet-balance">
+    <h2 class="dashboard-title">Wallet Balance</h2>
+    {% for balance in user.get_balances|slice:":5" %}
+    <div class="wallet-balance-box clearfix">
+        <div class="wallet-balance-ico">
+            <img src="{{balance.currency.get_image_url_name}}" onerror="this.onerror=null; this.src='{% static 'assets/images/unknown_currency.png' %}'" alt="{{ balance.currency.name }} currency image">
+        </div>
+
+        <div class="wallet-balance-name">
+            <h3>{{balance.currency.name}}</h3>
+            <span>{{balance.currency.acronym}}</span>
+        </div>
+
+        <div class="wallet-balance-amount">
+            <h3>{{balance.balance}} {{balance.currency.acronym}}</h3>
+        </div>
+    </div>
+    {% endfor %}
+</div>

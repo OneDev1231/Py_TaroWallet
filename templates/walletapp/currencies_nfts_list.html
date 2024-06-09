@@ -1,0 +1,54 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+{% load filesize_format %}
+
+{% block title %}
+   Tiramisu Wallet | List currencies
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, currencies
+{% endblock %}
+
+{% block description %}
+    List currencies
+{% endblock %}
+
+{% block extra_head %}
+
+<link rel="stylesheet" href="{% static '/css/assets.css' %}" />
+
+{% endblock %}
+
+{% block content %}
+
+<div class="assets-section">
+
+  {% include "currencies_inc_navigaion.html" with sel='currencies-nfts' %}
+
+  <!-- Currencies Section -->
+  <div class="assets-container" id="currency-section" style="display: flex;">
+    <div class="cards-container" id="currenciesCardContainer">
+      <!-- Card List Here -->
+      {% if currencies_list %}
+      {% for currency in currencies_list %}
+        {% include "currencies_inc_currency.html" with currency=currency%}
+      {% endfor %}
+      {% else %}
+        <p>There are no curriencies in your wallet.</p>
+      {% endif %}
+    </div>
+    <!-- Page Selector -->
+    {% include "inc_paginator.html" %}
+
+  </div>
+  <!-- All NFTs Section end -->
+</div>
+<br>
+<br>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'assets/js/assets.js' %}"></script>
+{% endblock %}

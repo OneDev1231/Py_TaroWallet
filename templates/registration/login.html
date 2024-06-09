@@ -1,0 +1,137 @@
+{% load static %}
+{% load socialaccount %}
+
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="{% static 'assets/css/site-css/site-style.css' %}">
+      <link rel="stylesheet" href="{% static 'assets/css/site-css/site-responsive.css' %}">
+      <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+      <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+      <link rel="stylesheet" href="{% static 'assets/fontawesome/css/all.min.css' %}">
+      <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}">
+      <title>Tiramisu Wallet login</title>
+      <meta name="Keywords" content="Tiramisu Wallet, taproot assets protocol, TAP, tapd, bitcoin, blockchain, altcoins, trade">
+      <meta name="Description" content="Please log into your Tiramisu Wallet account to buy, sell and mint Taproot Assets.">
+      <meta name="theme-color" content="#001c71">
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:description" content="Please log into your Tiramisu Wallet account to buy, sell and mint Taproot Assets.">
+      <meta name="twitter:title" content="Tiramisu Wallet login">
+      <meta name="twitter:image" content="{% static 'assets/images/wallet_preview.jpg.jpg' %}">
+      <meta property="og:locale" content="en_US">
+      <meta property="og:type" content="article">
+      <meta property="og:title" content="Tiramisu Wallet login">
+      <meta property="og:description" content="Please log into your Tiramisu Wallet account to buy, sell and mint Taproot Assets.">
+      <meta property="og:url" content="">
+      <meta property="og:site_name" content="Tiramisu Wallet login">
+      <meta property="og:image" content="{% static 'assets/images/wallet_preview.jpg.jpg' %}">
+      <meta property="og:image:secure_url" content="{% static 'assets/images/wallet_preview.jpg.jpg' %}">
+   </head>
+   <body class="login-bg">
+      <!-- user login area -->
+      <section class="user-login-area">
+        <div class="user-login-logo text-center">
+          {% if DEV_ENV == 'DEV' %}
+          <a href="/"><img src="{% static 'assets/images/logo-testnet.png' %}" alt="Logo"></a>
+          {% else %}
+          <a href="/"><img src="{% static 'assets/images/ogo.png' %}" alt="Logo"></a>
+          {% endif %}
+        </div>
+        <div class="user-login-box">
+          <div class="login-box-table">
+            <p class="theme-description text-center">Please input your email and your password to access your Tiramisu web Wallet account.</p>
+            <div class="login-box-inner">
+              <h2 class="login-title">Welcome Back!</h2>
+
+              <div class="user-login-inner">
+                <div class="theme-input-box">
+                  <a class="theme-btn" href="{% provider_login_url 'google'%}?next={% url 'balances' %}">
+                      <i class="fab fa-google"></i>
+                      Login with Google
+                  </a>
+                </div>
+              </div>
+              
+              <br>
+
+              {% if form.errors %}
+                <div class="alert alert-danger">
+                    {{ form.errors }}
+                </div>
+              {% endif %}
+              <div class="user-login-form">
+                <form class="user-login-inner" method="post" autocomplete="off" action="{% url 'login' %}">
+                  {% csrf_token %}
+                  <div class="user-login-inner">
+                    
+                    <div class="theme-input-box">
+                      <label>{{ form.username.label_tag }}</label>
+                      {{ form.username }}
+                    </div>
+
+                    <div class="theme-input-box">
+                      <label>{{ form.password.label_tag }}</label>
+                      {{ form.password }}
+                    </div>
+
+                    <div class="theme-input-box">
+                      <label>{{ form.captcha.label_tag }}</label>
+                      {{ form.captcha }}
+                    </div>
+
+                    <div class="theme-input-box">
+                        <input type="submit" value="login" class="theme-btn">
+                        <input type="hidden" name="next" value="{% url 'balances' %}">
+                    </div>
+
+                  </div>
+                </form>
+
+              </div>
+            </div>
+            <p class="login-box-des">Dont have an account? <a href={% url 'user-create' %}> Sign up for a new account</a></p>
+            <p class="login-box-des">Still need help? <a href="https://t.me/snow88488/"> Contact Support</a></p>
+          </div>
+        </div>
+      </section>
+      <!-- user login area -->
+      <!-- switch-button -->
+      <div class="switch-button"><i class="fas fa-cog fa-spin"></i></div>
+      <div class="switched-styles">
+         <h4>Color Switcher</h4>
+         <ul class="list-unstyled">
+             <li class="theme-default" data-color="dark-blue"></li>
+             <li class="light-sea-green" data-color="light-sea-green"></li>
+             <li class="theme-dark-green" data-color="dark-green"></li>
+             <li class="theme-light-blue" data-color="light-blue"></li>
+             <li class="theme-dark-orchid" data-color="dark-orchid"></li>
+             <li class="theme-yellow" data-color="yellow"></li>
+         </ul>
+         <div class="switched-mode">
+            <h4>Layout Mode</h4>
+            <ul class="clearfix">
+               <li><a class="active" id="light_mode" href="javascript:void(0);">Light</a></li>
+               <li><a id="dark_mode" href="javascript:void(0);">Dark</a></li>
+            </ul>
+         </div>
+         <div class="hide-button">×</div>
+      </div>
+     <!-- switch-button -->
+     <!-- Preloader area -->
+      <div id="loader-wrapper">
+         <div id="loader"></div>
+         <div class="loader-images"><img src="{% static 'assets/images/loader.gif' %}" alt="Loader"></div>
+      </div>
+      <!-- Preloader area -->
+     <!-- script area -->
+      <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+      <script src="{% static 'assets/js/popper.min.js' %}"></script>
+      <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+      <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'assets/js/jquery.cookie.min.js' %}"></script>
+      <script src="{% static 'assets/js/site-custom.js' %}"></script>
+      <!-- script area -->
+   </body>
+</html>

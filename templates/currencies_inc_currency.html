@@ -1,0 +1,44 @@
+{% load static %}
+{% load humanize %}
+
+
+<div class="card">
+  <a class="image-container" href="{{currency.get_absolute_url}}">
+    <img src="{{currency.get_image_url_name}}" alt="no-image" width="150">
+  </a>
+  <div class="card-description">
+    <a href="{{currency.get_absolute_url}}">
+      <h3>{{currency.name | truncatechars:20}}</h3>
+    </a>
+     <div class="card-features">
+
+          <div class="card-feature">
+              <p>{{currency.price_change}}%</p>
+              <img src="{% url 'get-chart-image' currency_pk=currency.id %}" alt="Chart" width="32">
+          </div>
+          <div class="card-feature">
+            <p>{{currency.holders_num}}</p>
+            <img src="{% static 'assets/images/User.svg' %}" alt="User" width="14">
+          </div>
+          <div class="card-feature">
+            <p>{{currency.transaction_num}}</p>
+            <img src="{% static 'assets/images/Light.svg' %}" alt="Light" width="12">
+          </div>
+          <div class="card-feature">
+            <p>{{currency.orders_num}}</p>
+            <img src="{% static 'assets/images/Contract.svg' %}" alt="Contract" width="12">
+          </div>
+      </div>
+  </div>
+  <div class="card-actions">
+    <div class="card-buttons">
+      <button> 
+        <h3>Add Wallet</h3>
+      </button>
+      <button onclick="location = '{{currency.get_absolute_url}}';">
+        <h3>Detail</h3>
+      </button>
+    </div>
+  </div>
+</div>
+

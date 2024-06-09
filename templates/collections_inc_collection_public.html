@@ -1,0 +1,35 @@
+
+{% load static %}
+{% load humanize %}
+<div class="card">
+    <a href="{{collection.get_absolute_public_url}}">
+        <div class="image-container">
+            <img src="{{collection.get_image_url_name}}" alt="No image" width="90%">
+        </div>
+    </a>
+    <div class="card-content">
+        <div class="card-text">
+            <a href="{{collection.get_absolute_public_url}}">
+                <h4>{{collection.name | truncatechars:30}}</h4>
+            </a>
+            <p>{{collection.description | truncatechars:100}}</p>
+        </div>
+        <div class="card-features">
+            <div class="card-feature">
+            <p>{{collection.holders_num}}</p>
+            <img src="{% static 'assets/images/User.svg' %}" alt="User" width="14">
+            </div>
+            <div class="card-feature">
+            <p>{{collection.transaction_num}}</p>
+            <img src="{% static 'assets/images/Light.svg' %}" alt="Light" width="12">
+            </div>
+            <div class="card-feature">
+            <p>{{collection.orders_num}}</p>
+            <img src="{% static 'assets/images/Contract.svg' %}" alt="Contract" width="12">
+            </div>
+        </div>
+        <a class="card-btn" href="{{collection.get_absolute_public_url}}">
+            <h3>SEE FULL COLLECTION</h3>
+        </a>
+    </div>
+    </div>

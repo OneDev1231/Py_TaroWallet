@@ -1,0 +1,64 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+   Tiramisu Wallet | Add new wallet
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, TAP
+{% endblock %}
+
+{% block description %}
+  Add new wallet
+{% endblock %}
+
+{% block content %}
+
+<div class="wallet-bradcrumb">
+  <h2><i class="fas fa-wallet"></i> <a href="{% url 'balances' %}">My wallet</a> / Add new wallet </h2>
+  <!-- <div class="theme-color-swith">
+   <a href="JavaScript:Void(0)" onclick="changeMode()">Dark Mode</a>
+   <label class="switch">
+     <input type="checkbox" id="theme-change" >
+     <span class="slider round"></span>
+   </label>
+ </div> -->
+</div>
+
+<div class="profile-page-area clearfix">
+  <div class="profile-page-area-main">
+    <div class="profile-information-right">
+
+      {% if form.errors %}
+        <p style="color:red">Errors identified, please fix the issues below.</p>
+      {% endif %}
+        <form action="{% url 'balance-create' %}" method="post" autocomplete="off">
+
+          <p>
+            Please select a currency to add to your wallet. If the currency isnt available in the dropdown menu 
+            you may have to register it.
+          </p>
+
+          {% csrf_token %}
+          {% for field in form %}
+
+            <div class="theme-input-box">
+              <label>{{ field.label_tag }}</label>
+              {{ field.errors }}
+              {{ field }}
+              <p>{{ field.help_text }}</p>
+            </div>
+
+          {% endfor %}
+        
+         <br>
+         <div class="profile-btn">
+            <button class="theme-btn">Add new wallet</button>
+         </div>
+        </form>
+
+      </div>
+   </div>
+</div>
+
+{% endblock %}

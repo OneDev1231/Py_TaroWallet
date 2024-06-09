@@ -1,0 +1,26 @@
+
+{% load static %}
+
+<div class="page-selector">
+
+  {% if page_obj.has_previous %}
+    <a href="?page=1{% if collection %}&collection={{collection.name}}{% endif %}" id="prevBtn" onclick="prevPage()">
+      <img src="{% static 'assets/images/ArrowLeft.svg' %}" alt="Previous" width="10" />
+      First
+    </a>
+    <a href="?page={{ page_obj.previous_page_number }}{% if collection %}&collection={{collection.name}}{% endif %}">
+      <div class="page-number" id="pageNumber">{{ page_obj.previous_page_number }}</div>
+    </a>
+  {% endif %}
+  <div class="page-number-selected" id="pageNumber">{{ page_obj.number }}</div>
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}{% if collection %}&collection={{collection.name}}{% endif %}" id="nextBtn" onclick="nextPage()">
+      <div class="page-number" id="pageNumber">{{ page_obj.next_page_number }}</div>
+    </a>
+    <a href="?page={{ page_obj.paginator.num_pages }}{% if collection %}&collection={{collection.name}}{% endif %}" id="nextBtn" onclick="nextPage()">
+      Last
+      <img src="{% static 'assets/images/ArrowRight.svg' %}" alt="Next" width="10" />
+    </a>
+  {% endif %}
+
+</div>

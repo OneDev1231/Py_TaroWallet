@@ -1,0 +1,70 @@
+{% extends "base_generic.html" %}
+
+
+
+{% block title %}
+   Tiramisu Wallet | Add new wallet
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, TAP
+{% endblock %}
+
+{% block description %}
+  Create order
+{% endblock %}
+
+{% block content %}
+
+<div class="wallet-bradcrumb">
+  <h2><i class="fas fa-exchange-alt"></i> <a href="{% url 'orders-my' %}">Trading</a> / Create order </h2>
+  <!-- <div class="theme-color-swith">
+   <a href="JavaScript:Void(0)" onclick="changeMode()">Dark Mode</a>
+   <label class="switch">
+     <input type="checkbox" id="theme-change" >
+     <span class="slider round"></span>
+   </label>
+ </div> -->
+</div>
+
+<div class="profile-page-area clearfix">
+
+  {% include 'inc_trading_navigation.html' with sel='Make order currency' %}
+  <br>
+
+  <div class="profile-page-area-main">
+    <div class="profile-information-right">
+
+      {% if form.errors %}
+        <p style="color:red">Errors identified, please fix the issues below.</p>
+      {% endif %}
+        <form action="{% url 'listing-currency-order-create' %}?currency={{currency.id}}" method="post" autocomplete="off">  
+          
+          <p>
+            Create a bid or an ask for a specific currency. Select the currency and the amount you would like to create order for. Once the order is created it will be visible 
+            in bids or asks section 
+          </p>
+
+          {% csrf_token %}
+          {% for field in form %}
+
+            <div class="theme-input-box">
+              <label>{{ field.label_tag }}</label>
+              {{ field.errors }}
+              {{ field }}
+              <p>{{ field.help_text }}</p>
+            </div>
+
+          {% endfor %}
+        
+         <br>
+         <div class="profile-btn">
+            <button class="theme-btn">Create order</button>
+         </div>
+        </form>
+
+      </div>
+   </div>
+</div>
+
+{% endblock %}

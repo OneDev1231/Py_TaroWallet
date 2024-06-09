@@ -1,0 +1,113 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+   Tiramisu Wallet | Deposit funds
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, TAP, send, withdraw
+{% endblock %}
+
+{% block description %}
+    Withdraw funds from your Tiramisu Wallet
+{% endblock %}
+
+{% block content %}
+{% load display_limits %}
+{% load static %}
+
+   <div class="wallet-bradcrumb">
+    <h2><i class="fas fa-history"></i> <a href="{% url 'transactions' %}">Transactions</a> / Send Taproot Asset</h2>
+ </div>
+
+ <div class="tranfer-coin-box">
+
+   <div class="transfer-coin-btn">
+      <a class="active" href="{% url 'transaction-send-taro' %}"><i class="fas fa-coins"></i>Send Taproot Asset</a>
+      <a href="{% url 'transaction-send-btc' %}"><i class="fab fa-btc"></i>Send BTC</a>
+      <a href="{% url 'transaction-send-btc-lnd' %}"><i class="fas fa-bolt"></i>Send BTC Lightning</a>
+      <a href="{% url 'transaction-send-internal' %}"><i class="fas fa-user-alt"></i>Send to user</a>
+   </div>
+   <br>
+
+
+   <div class="row">
+      <div class="col-xl-7">
+         <div class="transfer-coin-left-box">
+ 
+            <div class="transfer-coin-content">
+               <div class="transfer-coin-content-box" id="sent-coin">
+ 
+                  <p>
+                     Withdraw Taproot Asset from your account. Please enter the TAP invoice that you want to pay using the funds from your wallet. 
+                     Note that there will be an onchain transaction fee.
+                   </p>
+
+                   <p>
+                     Your onchain transaction fee will be {% get_fee_sat_estimate_onchain_tag %} SATs.
+                   </p>
+
+                   {%if currency %}
+                  <div class="invoice-qr-ammount-box">
+                     <div class="invoice-ammount-box">
+                        <label>{{currency.name}}</label>
+                        <h2 id="ammount-copy">{{currency.acronym}} </h2>
+                     </div>
+                     <div class="invoice-qr-box">
+                        <label>Asset Id</label>
+                        <div class="invoice-payment-url">
+                           <input type="" name="" value="{{currency.asset_id}}" disabled=""><i id="copy_asset_id_button_{{currency.id}}" data-clipboard-text="MgzB63dVsdbshsbhsbsbhsbsdhsdhvs" class="far fa-copy" data-original-title="" title=""></i>
+                        </div>
+                     </div>
+                     <script type="text/javascript">
+                        document.getElementById("copy_asset_id_button_{{currency.id}}").onclick = function(){
+                          if(copyContent('{{currency.asset_id}}')){
+                              // most important step in this whole process
+                              return false;
+                          }
+                        }
+                      </script>
+
+                  </div>
+                  {% endif %}
+
+                     {% if form.errors %}
+                     <p style="color:red">Errors identified, please fix the issues below.</p>
+                  {% endif %}
+                     <form action="{% url 'transaction-send-taro' %}" method="post" autocomplete="off">
+                     {% csrf_token %}
+                        
+                     {% for field in form %}
+   
+                     <div class="theme-input-box">
+                        <label>{{ field.label_tag }}</label>
+                        {{ field.errors }}
+                        {{ field }}
+                        <p>{{ field.help_text }}</p>
+                        </div>
+            
+                     {% endfor %}
+                     <br>
+   
+                        <div class="transfer-coin-button">
+                           <button class="theme-btn">Pay invoice</button>
+                        </div>
+                        
+                     </form>
+                     <br>
+                     {% include "qr_code_scan_button.html" %}
+ 
+               </div>
+ 
+            </div>
+         </div>
+      </div>
+ 
+      <div class="col-xl-5">
+         {% include "inc_wallet_overview.html" %}
+   </div>
+  </div>
+</div>
+
+
+{% endblock %}

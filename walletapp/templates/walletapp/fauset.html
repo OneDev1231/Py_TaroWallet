@@ -1,0 +1,135 @@
+{% extends "base_index.html" %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block title %}
+   Taproot Assets Protocol testnet fauset for {{faucet_currency.name}} currency 
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, protocol, mint, currencies, Bitcoin, Taproot, {{faucet_currency.name}}
+{% endblock %}
+
+{% block description %}
+   A testnet faucet for the currency {{faucet_currency.name}} minted on Taproot Assets Protocol on top of Bitcoin blockchain. Meant for testing of your tapd node.
+{% endblock %}
+
+{% block title_twitter %}
+   Taproot Assets Protocol testnet fauset for {{faucet_currency.name}} currency 
+{% endblock %}
+
+{% block description_twitter %}
+   A testnet faucet for the currency {{faucet_currency.name}} minted on Taproot Assets Protocol on top of Bitcoin blockchain. Meant for testing of your tapd node.
+{% endblock %}
+
+{% block title_og %}
+   Taproot Assets Protocol testnet fauset for {{faucet_currency.name}} currency 
+{% endblock %}
+
+{% block description_og %}
+   A testnet faucet for the currency {{faucet_currency.name}} minted on Taproot Assets Protocol on top of Bitcoin blockchain. Meant for testing of your taps node.
+{% endblock %}
+
+{% block content %}
+      <!-- bradcrumb area -->
+      <section class="bradcrumb-area">
+         <div class="container">
+            <div class="row">
+               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <div class="bradcrumb-box text-center">
+                     <h1>Taproot Assets Protocol testnet fauset</h1>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- bradcrumb area -->
+      <!-- contact area -->
+      <section class="contact-us-area page-paddings">
+            <div class="container">
+               <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-12 offset-xl-3 offset-lg-3 offset-md-2">
+                     <div class="contact-box">
+                        <div class="contact-box-column">
+                           <div class="contact-box-top text-center">
+
+                              <div class="trending-ico">
+                                 <img src="{{faucet_currency.get_image_url_name_large}}" alt="{{ faucet_currency.name }} currency image">
+                              </div>
+                              
+                              <br>
+
+                              <h3 class="theme-title">Receive the Taproot asset {{faucet_currency.name}}</h3>
+                              <p class="theme-description">
+                                 Submit a TAP invoice to receive Taproot assets.
+                              </p>
+                              <br>
+                              {% if form.errors %}
+                                 <div class="alert alert-danger">
+                                    please fix the issue with your invoice: {{form.errors.invoice_outbound}}
+                                 </div>
+                              {% elif messages %}
+                                 {% for message in messages %}
+                                   <div class="alert alert-{{message.tags}}">
+                                     {{message}}
+                                   </div>
+                                 {% endfor %}
+                              {% endif %}
+                           </div>
+                           <div class="contact-box-bottom">
+                              <form method="post" autocomplete="off" action="{% url 'faucet' %}?currency={{faucet_currency.id}}">
+                                 {% csrf_token %}
+                                 <div class="contact-box-from">
+                                    
+                                    <div class="invoice-qr-ammount-box">
+                                       <div class="invoice-qr-box">
+                                          <label>Asset Id</label>
+                                          <div class="invoice-payment-url">
+                                             <input type="" name="" value="{{faucet_currency.asset_id}}" disabled=""><i id="copy_asset_id_button_{{faucet_currency.id}}" class="far fa-copy" data-original-title="" title=""></i>
+                                          </div>
+                                       </div>
+                                       <script type="text/javascript">
+                                          document.getElementById("copy_asset_id_button_{{faucet_currency.id}}").onclick = function(){
+                                            if(copyContent('{{faucet_currency.asset_id}}')){
+                                                // most important step in this whole process
+                                                return false;
+                                            }
+                                          }
+                                        </script>
+                  
+                                    </div>
+
+
+                                    <div class="theme-input-box">
+                                       <label>Max amount:</label>
+                                       {%if faucet_currency.is_nft%}
+                                          1
+                                       {% else %}
+                                          100
+                                       {% endif %}
+                                    </div>
+
+                                   <div class="theme-input-box">
+                                     <label>{{ form.invoice_outbound.label_tag }}</label>
+                                     {{ form.invoice_outbound }}
+                                   </div>
+                                 
+                                   <div class="theme-input-box">
+                                       <input type="submit" value="Receive coins" class="theme-btn">
+                                   </div>
+                                   
+                                 </div>
+                               </form>
+
+                           </div>
+                           <!-- <p class="theme-description">Data stored as outlined in our <a href="privacy.html">Privacy Policy</a></p> -->
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+      </section>
+      <!-- contact area -->
+{% endblock %}

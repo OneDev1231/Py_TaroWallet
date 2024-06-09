@@ -1,0 +1,70 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+   Tiramisu Wallet | My listings
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, currencies
+{% endblock %}
+
+{% block description %}
+My listings
+{% endblock %}
+
+{% block content %}
+<div class="wallet-bradcrumb clearfix">
+  <h2><i class="fas fa-exchange-alt"></i> <a href="{% url 'orders-my' %}">Trading</a> / My listings</h2>
+</div>
+
+  <div class="wallet-balance-area clearfix">
+    {% include 'inc_trading_navigation.html' with sel='My LPs' %}
+    <br>
+
+  {% if listings_list %}
+
+    {% for listings in listings_list %}
+
+      <div class="wallet-balance-box wallet{{listings.currency.get_color_id}}">
+        <div class="wallet-balance-ico">
+          <a href="{{listings.currency.get_absolute_url}}">
+           <img src="{{listings.currency.get_image_url_name}}" onerror="this.onerror=null; this.src='{% static 'assets/images/unknown_currency.png' %}'" alt="{{listings.currency.name}}">
+          </a>
+        </div>
+        <h3>
+          <a href="{{listings.get_absolute_url}}">
+            {{ listings.currency.name }}
+          </a>
+        </h3>
+
+        <h4>{{ listings.get_price_sat|floatformat:2|intcomma }} SAT / 1 
+        {% if listings.currency.is_nft %}
+          <i class="fas fa-gem"></i></h4>
+        {% else %}
+          {{ listings.currency.acronym }}
+        {% endif %}
+        </h4>
+
+        <br>
+
+        <div class="wallet-balance-btn clearfix">
+
+          <a class="theme-btn" href="{% url 'listing-delete' listing_pk=listings.id %}"> 
+            Delete
+          </a>
+
+        </div>
+
+      </div>
+    {% endfor %}
+    {% else %}
+      <p>There are no listings.</p>
+    {% endif %}
+  </div>
+
+  {% include "inc_paginator.html" %}
+
+{% endblock %}

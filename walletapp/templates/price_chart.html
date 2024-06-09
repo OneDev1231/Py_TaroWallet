@@ -1,0 +1,78 @@
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div id="chart_div" style="width: 100%; height: 100%;"></div>
+
+<script type="text/javascript">
+
+    var url = "{% url 'currency-price-history' currency_pk=listings.currency.id period=period %}";
+
+    google.charts.load('current', {packages: ['corechart', 'line']});
+    google.charts.setOnLoadCallback(drawBasic);
+    
+    google.charts.load('current', {
+        packages: ['corechart', 'line']
+        });
+        google.charts.setOnLoadCallback(drawBasic);
+        
+        window.addEventListener("resize", drawBasic);
+
+        function drawBasic() {
+
+        fetch(url).then(
+            function(u){ return u.json();}
+            ).then(
+            function(json){
+                data_header = [[ {type: 'date', label: 'Date'}, 'Price of 1 {{ listings.currency.acronym }}']]
+                var data_in = data_header.concat(json)
+                console.log(data_in)
+                
+                var data = google.visualization.arrayToDataTable(data_in);
+                var options = {
+                    chart: {
+                        title: 'Price history of {{ listings.currency.name }} ({{ listings.currency.acronym }})',
+                        subtitle: 'expresssed in Satoshis (SAT)',
+                    },
+                    chartArea:{left:90,top:30,width:"80%",height:"80%"},
+                    
+                    legendTextStyle: { color: '#FFFFFF' },
+                    titleTextStyle: { color: '#FFFFFF' },
+
+                    legend: { 
+                        position: 'top', 
+                        alignment: 'start', 
+
+                        textStyle: {
+                            color: '#FFFFFF'
+                        }
+
+                    },
+                    
+                    hAxis: {
+                        title: 'Time / UTC',
+                        textStyle:{color: '#FFFFFF'},
+                        titleTextStyle:{color: '#FFFFFF'}
+                    },
+                    vAxis: {
+                        title: 'Price / SAT',
+                        textStyle:{color: '#FFFFFF'},
+                        titleTextStyle:{color: '#FFFFFF'}
+                    },
+                    gridlines: {color: '#1E4D6B'},
+                    responsive: true,
+                    lineWidth: 4,
+                    backgroundColor: '#190042',
+                    colors: ['#51d0ff'],
+                    
+                };
+                
+                var chart = new google.visualization.AreaChart(document.getElementById('{{target_element}}'));
+                
+                chart.draw(data, options);
+            }
+            )
+
+        }
+</script>
+
+

@@ -1,0 +1,129 @@
+
+
+{% for listing in orders %}
+      <div class="wallet-transaction-box clearfix">
+        {% if listing.is_ask %}
+        <div class="wallet-transaction-ico"><i class="fas fas fa-exchange-alt"></i></div>
+        {% else %}
+        <div class="wallet-transaction-ico wallet-Withdrawal"><i class="fas fas fa-exchange-alt"></i></div>
+        {% endif %}
+
+         <div class="wallet-transaction-inner clearfix">
+           <div class="wallet-transaction-name">
+              {%if listing.is_ask %}
+              <h3>Ask for {{listing.currency.name}}</h3>
+              {%else%}
+              <h3>Bid for {{listing.currency.name}}</h3>
+              {%endif%}
+              <span>{{listing.get_price_sat}} SAT / {% if listing.currency.is_nft %}<a href="{{listing.currency.get_absolute_url}}"><i class="fas fa-gem"></i></a>{%else%}1 <a href="{{listing.currency.get_absolute_url}}">{{listing.currency.acronym}}</a>{%endif%}</span>
+           </div>
+           <div class="coin-wallet-name text-center">
+                {% if listing.user.id == user.id %}
+                    <button data-toggle="modal" data-target="#accept-{{listing.id}}" class="theme-btn">Delete</button>
+
+                    <div id="accept-{{listing.id}}" class="modal fade theme-popup" role="dialog" style="display: none;" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <!-- <h2 class="dashboard-title">Create Wallet</h2> -->
+                                    <button type="button" class="close" data-dismiss="modal"><i class="fas fa-times"></i></button>
+                                    <div class="wallet-popup">
+                                    <div class="wallet-balance-box clearfix">
+        
+                                        <h3 class="theme-title">Confirmation</h3>
+                                    </div>
+                                    <div class="theme-popup-scroll">
+                                        <p>
+                                            Are you sure you want to DELETE the order to {% if listing.type == 'order_bid' %} sell {% else %} buy {%endif%} <b>{{listing.amount}} {{listing.currency.acronym}}</b> for the total of <b>{{listing.get_price_sat_total}} SAT</b>. 
+                                        </p> 
+                                        <br>
+                                        <button class="theme-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                        <a href="{% url 'listing-delete' listing_pk=listing.id %}">
+                                            <button class="theme-btn">Delete</button>
+                                        </a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                {% if listing.is_ask %}
+                  <button data-toggle="modal" data-target="#accept-{{listing.id}}" class="theme-btn">Buy</button>
+                  
+                  <div id="accept-{{listing.id}}" class="modal fade theme-popup" role="dialog" style="display: none;" aria-hidden="true">
+                     <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                           <div class="modal-body">
+                              <!-- <h2 class="dashboard-title">Create Wallet</h2> -->
+                              <button type="button" class="close" data-dismiss="modal"><i class="fas fa-times"></i></button>
+                              <div class="wallet-popup">
+                                 <div class="wallet-balance-box clearfix">
+
+                                    <h3 class="theme-title">Confirmation</h3>
+                                 </div>
+                                 <div class="theme-popup-scroll">
+                                    <p>
+                                       Are you sure you want to {% if listing.type == 'order_bid' %} sell {% else %} buy {%endif%} <b>{{listing.amount}} {{listing.currency.acronym}}</b> for the total of <b>{{listing.get_price_sat_total}} SAT</b>. 
+                                       That is <b>{{listing.get_price_sat}} SAT / {% if listing.currency.is_nft %}<i class="fas fa-gem"></i>{%else%}1 {{listing.currency.acronym}}{%endif%}</b> .
+                                    </p> 
+                                    <br>
+                                    <button class="theme-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                    <a href="{% url 'execute-order-listing' listing_pk=listing.id %}">
+                                       <button class="theme-btn">Accept</button>
+                                    </a>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                {%else%}
+                    <button data-toggle="modal" data-target="#accept-{{listing.id}}" class="theme-btn">Sell</button>
+
+                    <div id="accept-{{listing.id}}" class="modal fade theme-popup" role="dialog" style="display: none;" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <!-- <h2 class="dashboard-title">Create Wallet</h2> -->
+                                <button type="button" class="close" data-dismiss="modal"><i class="fas fa-times"></i></button>
+                                <div class="wallet-popup">
+                                    <div class="wallet-balance-box clearfix">
+
+                                    <h3 class="theme-title">Confirmation</h3>
+                                    </div>
+                                    <div class="theme-popup-scroll">
+                                    <p>
+                                        Are you sure you want to {% if listing.type == 'order_bid' %} sell {% else %} buy {%endif%} <b>{{listing.amount}} {{listing.currency.acronym}}</b> for the total of <b>{{listing.get_price_sat_total}} SAT</b>. 
+                                        That is <b>{{listing.get_price_sat}} SAT / {% if listing.currency.is_nft %}<i class="fas fa-gem"></i>{%else%}1 {{listing.currency.acronym}}{%endif%}</b> .
+                                    </p> 
+                                    <br>
+                                    <button class="theme-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                    <a href="{% url 'execute-order-listing' listing_pk=listing.id %}">
+                                        <button class="theme-btn">Accept</button>
+                                    </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                {%endif%}
+                {%endif%}
+           </div>
+           <div class="coin-wallet-date text-center">
+              <span>Size</span>
+              <h3> {% if listing.currency.is_nft %}<a href="{{listing.currency.get_absolute_url}}"><i class="fas fa-gem"></i></a>{%else%}{{listing.amount}} <a href="{{listing.currency.get_absolute_url}}">{{listing.currency.acronym}}</a>{%endif%}</h3>
+              
+           </div>
+           <div class="wallet-transaction-balance text-right">
+             <span>Total cost</span>
+              <h3>{{listing.get_price_sat_total}} SAT</h3>
+           </div>
+         </div>
+      </div>
+      {% endfor %}

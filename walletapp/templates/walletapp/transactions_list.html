@@ -1,0 +1,165 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+   Tiramisu Wallet | List transactions
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, transactions, list
+{% endblock %}
+
+{% block description %}
+    List of your transactions
+{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+<div class="wallet-bradcrumb">
+  <h2><i class="fas fa-history"></i> Transactions</h2>
+</div>
+
+
+
+<div class="wallet-transaction clearfix">
+  {% if transactions_list %}
+  
+  {% for transaction in transactions_list %}
+
+  <div class="wallet-transaction-box clearfix">
+
+    <div 
+      class="wallet-transaction-ico 
+        {% if transaction.direction == 'outbound' and transaction.destination_user == request.user and not transaction.is_pending and not transaction.is_error %} 
+          wallet-Withdrawal 
+        {% endif %}
+        {% if transaction.direction == 'inbound' and not transaction.destination_user == request.user and not transaction.is_pending and not transaction.is_error %} 
+          wallet-Withdrawal 
+        {% endif %}" 
+      {% if transaction.is_error %}
+        , style="background-color: #CB356B;"
+      {% elif transaction.is_pending %}
+        , style="background-color: #968c83;"
+      {% endif %}
+      >
+      {% if transaction.destination_user == request.user %}
+      <i class="{{transaction.get_small_status_image_class_dest_user}}"></i>
+      {% else %}
+      <i class="{{transaction.get_small_status_image_class  }}"></i>
+      {% endif %}
+    </div>
+
+    <div class="wallet-transaction-inner clearfix">
+      <div class="wallet-transaction-name">
+        {% if transaction.destination_user == request.user %}
+        <h3>{{transaction.get_description_dest_user}}</h3>
+        {% else %}
+        <h3>{{transaction.get_description}}</h3>
+        {% endif %}
+          <span><a href="{{ transaction.currency.get_absolute_url }}">
+            {%if transaction.currency.is_nft %}{{ transaction.currency.name }}{% else %}{{ transaction.currency.acronym }}{% endif %}
+          </a></span>
+       </div>
+
+      <div class="coin-wallet-date text-center">
+        <span>Date</span>
+        <h3><span data-toggle="tooltip" data-placement="top" title="{{ transaction.created_timestamp }}">{{transaction.created_timestamp | naturaltime}}</span></h3>
+      </div>
+      <div class="coin-wallet-date text-center">
+        <a href="{{ transaction.get_absolute_url }}">
+            <button class="theme-btn">Detail</button>
+        </a>
+      </div>
+      <div class="wallet-transaction-balance text-right">
+        <span>Amount</span>
+        
+        <h3>{{ transaction.amount }} <a href="{{ transaction.currency.get_absolute_url }}">
+          {%if transaction.currency.is_nft %}<i class="fas fa-gem"></i>{% else %}{{ transaction.currency.acronym }}{% endif %}
+        </a>
+      
+      </h3>
+      </div>
+    </div>
+     
+     {% if transaction.invoice_inbound or transaction.invoice_outbound or transaction.tx_id %}
+        <div class="wallet-trx-id">
+        <p class="trx-id">
+          
+          {% if transaction.tx_id %}
+          <span>
+            <span>Tx id:</span>
+
+            <a href="https://live.blockcypher.com/btc/tx/{{transaction.tx_id}}/">
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+
+            {{ transaction.tx_id | safe }} 
+          </span>
+          
+          {% endif %}
+
+
+          {% if transaction.invoice_inbound or transaction.invoice_outbound %}
+          {% if transaction.invoice_inbound %}
+          <span>
+            <span>Invoice:</span>
+
+            <a href="" id="copy_invoice_button_{{transaction.id}}" target="_blank">
+              <i class="fas fa-copy"></i>
+            </a>
+
+            {{ transaction.invoice_inbound | safe }} 
+          </span>
+
+          <script type="text/javascript">
+            document.getElementById("copy_invoice_button_{{transaction.id}}").onclick = function(){
+              if(copyContent('{{transaction.invoice_inbound}}')){
+                  // most important step in this whole process
+                  return false;
+              }
+            }
+          </script>
+            
+          {% else %}
+            <span>
+              <span>Invoice:</span>
+
+              <a href="" id="copy_invoice_button_{{transaction.id}}" target="_blank">
+                <i class="fas fa-copy"></i>
+              </a>
+
+              {{ transaction.invoice_outbound | safe }} 
+            </span>
+
+            <script type="text/javascript">
+              document.getElementById("copy_invoice_button_{{transaction.id}}").onclick = function(){
+                if(copyContent('{{transaction.invoice_outbound}}')){
+                    // most important step in this whole process
+                    return false;
+                }
+              }
+            </script>
+
+            {% endif %}
+          {% endif %}
+
+        </p>
+      </div>
+      {% endif %}
+     
+      <p class="theme-edit-note">Note: <span><span>{{ transaction.description | truncatechars:50 }} </span></i></span></p>
+      
+  </div>
+
+{% endfor %}
+
+{% else %}
+  <p>There are no transaction.</p>
+{% endif %}
+
+</div>
+
+{% include "inc_paginator.html" %}
+
+{% endblock %}

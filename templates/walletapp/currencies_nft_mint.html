@@ -1,0 +1,63 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+   Tiramisu Wallet | Mint new NFT
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, currencies
+{% endblock %}
+
+{% block description %}
+    Mint new currency
+{% endblock %}
+
+{% block content %}
+
+<div class="wallet-bradcrumb">
+  <h2><i class="fas fa-coins"></i> <a href="{% url 'currencies' %}">Currencies</a> / Mint new NFT </h2>
+</div>
+
+<div class="profile-page-area clearfix">
+
+  <div class="transfer-coin-btn">
+    <a href="{% url 'currency-mint' %}"><i class="fas fa-coins"></i>Mint currency</a>
+    <a class="active" href="{% url 'currency-mint-nft' %}"><i class="fas fa-gem"></i>Mint NFT</a>
+    <a href="{% url 'currency-mint-nft-collection' %}"><i class="fas fa-layer-group"></i>Mint NFT collection</a>
+  </div>
+  <br>
+
+  <div class="profile-page-area-main">
+    <div class="profile-information-right">
+      
+      <p>
+        Please define the parameters of the new currency that you wish to mint. At the end of your process new wallet will be added to your account containing the currency.
+      </p>
+
+      {% if form.errors %}
+        <p style="color:red">Errors identified, please fix the issues below.</p>
+      {% endif %}
+        <form action="{% url 'currency-mint-nft' %}" method="post" autocomplete="off" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {% for field in form %}
+
+          <div class="theme-input-box">
+            <label>{{ field.label_tag }}</label>
+            {{ field.errors }}
+            {{ field }}
+            <p>{{ field.help_text }}</p>
+          </div>
+
+          {% endfor %}
+
+         <div class="profile-btn">
+            <button class="theme-btn">Mint</button>
+         </div>
+        </form>
+
+      </div>
+   </div>
+</div>
+
+{% endblock %}

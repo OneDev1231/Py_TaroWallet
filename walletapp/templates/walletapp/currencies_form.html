@@ -1,0 +1,56 @@
+{% extends "base_generic.html" %}
+
+
+{% block title %}
+   Tiramisu Wallet | Register new currency
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, currencies
+{% endblock %}
+
+{% block description %}
+    Register new existing currency 
+{% endblock %}
+
+{% block content %}
+
+<div class="wallet-bradcrumb">
+  <h2><i class="fas fa-coins"></i> <a href="{% url 'currencies' %}">Currencies</a> / Register new currency </h2>
+</div>
+
+<div class="profile-page-area clearfix">
+  <div class="profile-page-area-main">
+    <div class="profile-information-right">
+      
+      <p>
+        Please specify the details of the new currency that you want to register.
+      </p>
+
+      {% if form.errors %}
+        <p style="color:red">Errors identified, please fix the issues below.</p>
+      {% endif %}
+        <form action="{% url 'currency-create' %}" method="post" autocomplete="off" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {% for field in form %}
+
+          <div class="theme-input-box">
+            <label>{{ field.label_tag }}</label>
+            {{ field.errors }}
+            {{ field }}
+            <p>{{ field.help_text }}</p>
+          </div>
+
+          {% endfor %}
+
+         <div class="profile-btn">
+            <button class="theme-btn">Create</button>
+         </div>
+        </form>
+
+      </div>
+   </div
+</div>
+
+{% endblock %}

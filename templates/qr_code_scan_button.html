@@ -1,0 +1,75 @@
+
+<div class="transfer-coin-button">
+  <div class="coin-wallet-date text-center">
+    <button data-toggle="modal" data-target="#qr_code_modal" class="theme-btn"><i class="fas fa-qrcode"></i> Scan QR</button>
+  </div>
+</div>
+
+<div id="qr_code_modal" class="modal fade theme-popup" role="dialog" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-body">
+            <!-- <h2 class="dashboard-title">Create Wallet</h2> -->
+            <button type="button" class="close" data-dismiss="modal"><i class="fas fa-times"></i></button>
+            <div class="transfer-coin-content-box">
+               <div class="payment-invoice-content">
+                  <div class="invoice-warning">
+                     <p>
+                       <span class="invoice-text">
+                       <i class="fas fa-exclamation-circle"></i></span> 
+                       After scanning the QR code please carefully validate the destination address.
+                       <div class="container">
+                          <h1>Scan QR Codes</h1>
+                          <div class="section">
+                              <div id="my-qr-reader">
+                              </div>
+                          </div>
+                      </div>
+                    </p>
+                  </div>
+                  <div class="wallet-btn text-right">
+                     <button class="theme-btn cancel-btn" data-dismiss="modal">Close</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+        </div>
+    </div>
+</div>
+
+
+<script
+src="https://unpkg.com/html5-qrcode">
+</script>
+<script>
+function domReady(fn) {
+if (
+    document.readyState === "complete" ||
+    document.readyState === "interactive"
+) {
+    setTimeout(fn, 1000);
+} else {
+    document.addEventListener("DOMContentLoaded", fn);
+}
+}
+
+domReady(function () {
+
+// If found you qr code
+
+
+let htmlscanner = new Html5QrcodeScanner(
+    "my-qr-reader",
+    { fps: 10, qrbos: 250 }
+);
+function onScanSuccess(decodeText, decodeResult) {
+   document.getElementById("id_invoice_outbound").value = decodeText;
+   $('#qr_code_modal').modal('toggle');
+   document.getElementById("html5-qrcode-button-camera-stop").click();
+
+}
+htmlscanner.render(onScanSuccess);
+});
+</script>
+

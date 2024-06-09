@@ -1,0 +1,10 @@
+<li class="notification">
+    <div class="notification-image">
+      <img src="{% static 'assets/images/Point.svg' %}" alt="Point" />
+      <img src="{% static 'assets/images/ImageUser.svg' %}" alt="Profile" width="40" />
+    </div>
+    <div>
+      <p>{{notification.message}}</p>
+      <span>{{notification.create_date}}</span>
+    </div>
+</li>

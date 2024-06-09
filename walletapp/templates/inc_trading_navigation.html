@@ -1,0 +1,10 @@
+
+
+<div class="transfer-coin-btn">
+    <a {%if sel == 'My LPs' %} class="active" {%endif%} href="{% url 'listings-my' %}" data-tab="sent-coin"><i class="fas fa-coins"></i>My LPs</a>
+    <a {%if sel == 'My orders' %} class="active" {%endif%} href="{% url 'orders-my' %}" data-tab="sent-coin"><i class="fas fa-coins"></i>My orders</a>
+    <a {%if sel == 'Create LP' %} class="active" {%endif%} href="{% url 'listing-create' %}" data-tab="sent-coin"><i class="fas fa-coins"></i>Create LP</a>
+    <a {%if sel == 'List NFT' %} class="active" {%endif%} href="{% url 'listing-nft-create' %}" data-tab="sent-coin"><i class="fas fa-gem"></i>List NFT</a>
+    <a {%if sel == 'Make order currency' %} class="active" {%endif%} href="{% url 'listing-currency-order-create' %}" data-tab="sent-coin"><i class="fas fa-gem"></i>Make order currency</a>
+    <a {%if sel == 'Make order NFT' %} class="active" {%endif%} href="{% url 'listing-currency-order-nft-create' %}" data-tab="sent-coin"><i class="fas fa-gem"></i>Make order NFT</a>
+  </div>

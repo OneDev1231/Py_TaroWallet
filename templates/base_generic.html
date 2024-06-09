@@ -1,0 +1,302 @@
+{% load static %}
+{% load humanize %}
+
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      
+      <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}">
+      <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+      <link rel="stylesheet" href="{% static 'css/my-wallet.css' %}" />
+      
+      <title>{% block title %}{% endblock %}</title>
+
+      <meta name="Keywords" content="{% block keywords %}{% endblock %}">
+      <meta name="Description" content="{% block description %}{% endblock %}">
+
+      <meta name="theme-color" content="#001c71">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:description" content="{% block description_twitter %}{% endblock %}">
+      <meta name="twitter:title" content="{% block title_twitter %}{% endblock %}">
+      <meta name="twitter:image" content="{% static 'assets/images/index_preview.jpg' %}">
+      
+      <meta property="og:locale" content="en_US">
+      <meta property="og:type" content="article">
+      <meta property="og:title" content="{% block title_og %}{% endblock %}">
+      <meta property="og:description" content="{% block description_of %}{% endblock %}">
+      <meta property="og:url" content="">
+      <meta property="og:site_name" content="{% block site_name %}{% endblock %}">
+      <meta property="og:image" content="{% static 'assets/images/index_preview.jpg' %}">
+      <meta property="og:image:secure_url" content="{% static 'assets/images/index_preview.jpg' %}">
+
+      
+      
+      <script>
+
+         async function copyContent(text) {
+
+            try {
+              await navigator.clipboard.writeText(text);
+              console.log('Content copied to clipboard');
+              /* Resolved - text copied to clipboard successfully */
+            } catch (err) {
+              console.error('Failed to copy: ', err);
+              /* Rejected - text failed to copy to the clipboard */
+            }
+          }
+      </script>
+
+      {% comment %} 
+      For microsoft clarity
+      {% endcomment %}
+
+      <script type="text/javascript">
+         (function(c,l,a,r,i,t,y){
+             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+             t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+         })(window, document, "clarity", "script", "jgdq4c1g76");
+      </script>
+      
+      {% block extra_head %}{% endblock %}
+
+   <body>
+      <!-- DESKTOP -->
+      <nav class="sidebar">
+        <div class="tiramisu-logo">
+          <a href="/index.html" class="logo">
+            <img src="{% static 'assets/images/Logo.png' %}" alt="Tiramisu Wallet" width="75" />
+          </a>
+          <h2><span>Tiramisu</span> Wallet</h2>
+        </div>
+        <div class="routes">
+          <a href="/dashboard.html" class="route">
+            <img src="{% static 'assets/images/Meter.svg' %}" alt="Home" width="22" />
+            Dashboard
+          </a>
+          <a href="/my-wallet.html" class="route">
+            <img src="{% static 'assets/images/WalletSmall.svg' %}" alt="My Wallet" width="22" />
+            My wallet
+          </a>
+          <a href="/add-wallet.html" class="route">
+            <img src="{% static 'assets/images/Plus.svg' %}" alt="Add Wallet" width="22" />
+            Add new wallet
+          </a>
+          <a href="/assets.html" class="route selected">
+            <img src="{% static 'assets/images/Coins.svg' %}" alt="Assets" width="22" />
+            Assets
+          </a>
+          <a href="/trading.html" class="route">
+            <img src="{% static 'assets/images/SmallSwap.svg' %}" alt="Trading" width="22" />
+            Trading
+          </a>
+          <a href="/import-asset.html" class="route">
+            <img src="{% static 'assets/images/Download.svg' %}" alt="Import New Asset" width="22" />
+            Import new asset
+          </a>
+          <a href="/mint-asset.html" class="route">
+            <img src="{% static 'assets/images/Download.svg' %}" alt="Mint Assets" width="22" />
+            Mint new assets
+          </a>
+          <a href="/deposit-assets.html" class="route">
+            <img src="{% static 'assets/images/Download2.svg' %}" alt="Deposit Assets" width="22" />
+            Deposit assets
+          </a>
+          <a href="/withdraw-asset.html" class="route">
+            <img src="{% static 'assets/images/Coliseum.svg' %}" alt="Withdraw assets" width="22" />
+            Withdraw assets
+          </a>
+          <a href="/transactions.html" class="route">
+            <img src="{% static 'assets/images/Clock.svg' %}" alt="Transactions" width="22" />
+            Transactions
+          </a>
+          <a href="/wallet-home.html" class="route">
+            <img src="{% static 'assets/images/Home.svg' %}" alt="Wallet Home Page" width="22" />
+            Wallet home page
+          </a>
+          <a href="/scan-home.html" class="route">
+            <img src="{% static 'assets/images/Qr.svg' %}" alt="Scan" width="22" />
+            Scan
+          </a>
+        </div>
+        <a href="/my-wallet.html" class="balance-always-on-desktop">
+          <img src="{% static 'assets/images/BitcoinLetter.svg' %}" alt="balance" width="35" />
+          <div class="balance-always-on">
+            <span class="balance"><b>Bitcoin:</b> {{user.get_btc_balance}} SAT</span>
+            <span class="pending"><b>Pending:</b> {{user.get_btc_pending_balance}} SAT</span>
+          </div>
+        </a>
+      </nav>
+      <nav class="topbar">
+        <!-- Notifications Modal -->
+        <div class="notifications-modal">
+            <div class="notifications-title">
+              <h3>Notifications</h3>
+              <img src="{% static 'assets/images/Notification.svg' %}" alt="Notifications" width="20" />
+            </div>
+            <p>You have {{user.get_unread_notifications_num}} unread notifications</p>
+            {% comment %} <h4>Unread</h4> {% endcomment %}
+            <ul>
+              {% for notification in user.get_unread_notifications %}
+                 {% include "inc_notification.html" with notification=notification %}
+              {% endfor %}
+            </ul>
+          </div>
+        <!-- Notifications Modal end -->
+        <!-- User Modal -->
+        <div class="user-modal">
+          <div>
+            <img src="{% static 'assets/images/MyWallet.svg' %}" alt="My wallet" width="26" />
+            <p>My wallet</p>
+          </div>
+          <div>
+            <img
+              src="{% static 'assets/images/Logout.svg' %}"
+              alt="Logout"
+              width="24"
+              style="padding-left: 1px"
+            />
+            <a href="{% url 'logout' %}?next=/" style="color: inherit;">
+            <p>Logout</p>
+            </a>
+          </div>
+        </div>
+        <!-- User Modal end -->
+        <div class="topbar-title">
+         {% block bread_crumb %}{% endblock %}
+        </div>
+        <div class="profile-container">
+          <div class="search">
+            <img src="{% static 'assets/images/Search.svg' %}" alt="Search" width="24" />
+            <input type="text" placeholder="Search" />
+          </div>
+          <img
+            class="notification-icon topbar-icon"
+            src="{% static 'assets/images/Ring.svg' %}"
+            alt="Notification"
+            width="24"
+          />
+          <img src="{% static 'assets/images/ImageUser.svg' %}" alt="Profile" class="user-image" />
+          <img
+            class="topbar-icon"
+            id="dropDown"
+            src="{% static 'assets/images/WhiteDownArrow.svg' %}"
+            alt="Arrow Down"
+            width="20px"
+            style="cursor: pointer"
+          />
+        </div>
+      </nav>
+      <!-- DESKTOP END -->
+  
+      <!-- MOBILE -->
+      <nav class="responsive-topbar">
+        <!-- Notifications Modal -->
+        <div class="responsive-notifications-modal">
+          <div class="notifications-title">
+            <h3>Notifications</h3>
+            <img src="{% static 'assets/images/Notification.svg' %}" alt="Notifications" width="20" />
+          </div>
+          <p>You have {{user.get_unread_notifications_num}} unread notifications</p>
+          {% comment %} <h4>Unread</h4> {% endcomment %}
+          <ul>
+            {% for notification in user.get_unread_notifications %}
+               {% include "inc_notification.html" with notification=notification %}
+            {% endfor %}
+          </ul>
+        </div>
+        <!-- Notifications Modal end -->
+       <div class="first-row-topbar">
+          <div class="responsive-logo">
+            <a href="/index.html" class="logo">
+              <img src="{% static 'assets/images/Logo.png' %}" alt="Tiramisu Wallet" width="75" />
+            </a>
+            <h2><span>Tiramisu</span> Wallet</h2>
+          </div>
+          <a href="/my-wallet.html">
+            <div class="balance-always-on">
+              <span class="balance"><b>Bitcoin:</b> {{user.get_btc_balance}} SAT</span>
+              <span class="pending"><b>Pending:</b> {{user.get_btc_pending_balance}} SAT</span>
+            </div>
+          </a>
+          <img
+            class="responsive-notification-icon"
+            src="{% static 'assets/images/Ring.svg' %}"
+            alt="Notification"
+            width="24"
+          />
+        </div>
+        <div class="search-container">
+          <div class="search">
+            <img src="{% static 'assets/images/Search.svg' %}" alt="Search" />
+            <input type="text" placeholder="Search" />
+          </div>
+        </div>
+        <div class="topbar-title">
+          {% block bread_crumb_2 %}{% endblock %}
+        </div>
+      </nav>
+      <nav class="responsive-bottombar">
+        <div class="responsive-menu-modal">
+          <div class="responsive-modal-routes">
+            <a href="#" class="responsive-modal-route">
+              <img src="{% static 'assets/images/WhiteLogout.svg' %}" alt="Logout" />
+              <span>Logout</span>
+            </a>
+            <a href="add-wallet.html" class="responsive-modal-route">
+              <img src="{% static 'assets/images/Plus.svg' %}" alt="Add" />
+              <span>Add new wallet</span>
+            </a>
+            <a href="import-asset.html" class="responsive-modal-route">
+              <img src="{% static 'assets/images/Download2.svg' %}" alt="Upload" />
+              <span>Import new asset</span>
+            </a>
+            <a href="mint-asset.html" class="responsive-modal-route">
+              <img src="{% static 'assets/images/Download2.svg' %}" alt="Upload" />
+              <span>Mint new asset</span>
+            </a>
+            <a href="transactions.html" class="responsive-modal-route">
+              <img src="{% static 'assets/images/Clock.svg' %}" alt="Transactions" />
+              <span>Transactions</span>
+            </a>
+            <a href="dashboard.html" class="responsive-modal-route">
+              <img src="{% static 'assets/images/Home.svg' %}" alt="Dashboard" />
+              <span>Wallet home page</span>
+            </a>
+          </div>
+        </div>
+        <a href="trading.html" class="swap-container">
+          <img src="{% static 'assets/images/WhiteSwap.svg' %}" alt="Swap" />
+        </a>
+        <div class="bottombar-container">
+          <a href="dashboard.html" class="bottombar-item">
+            <img src="{% static 'assets/images/Meter.svg' %}" alt="Dashboard" width="30" />
+            <span>Dashboard</span>
+          </a>
+          <a href="my-wallet.html" class="bottombar-item">
+            <img src="{% static 'assets/images/WalletSmall.svg' %}" alt="Wallet" width="26" />
+            <span>My wallet</span>
+          </a>
+        </div>
+        <div class="bottombar-container">
+          <a href="assets.html" class="bottombar-item" style="margin-right: 1rem">
+            <img src="{% static 'assets/images/BlueCoins.svg' %}" alt="Assets" width="32" />
+            <span>Assets</span>
+          </a>
+          <div class="bottombar-item responsive-menu-btn">
+            <img src="{% static 'assets/images/Menu.svg' %}" alt="Menu" width="28" />
+            <span>More</span>
+          </div>
+        </div>
+      </nav>
+      <!-- MOBILE END -->
+      <main class="container-page">
+         {% block content %}{% endblock %}
+      </main>
+
+      {% block scripts %}{% endblock %}
+      <script src="{% static 'assets/js/script.js' %}"></script>
+    </body>
+</html>

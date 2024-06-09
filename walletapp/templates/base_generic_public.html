@@ -1,0 +1,32 @@
+{% load static %}
+
+<html lang="en"><head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Asset Detail</title>
+   <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+   <link rel="stylesheet" href="{% static '/css/asset-detail.css' %}">
+   <script>
+      async function copyContent(text) {
+   
+         try {
+           await navigator.clipboard.writeText(text);
+           console.log('Content copied to clipboard');
+           /* Resolved - text copied to clipboard successfully */
+         } catch (err) {
+           console.error('Failed to copy: ', err);
+           /* Rejected - text failed to copy to the clipboard */
+         }
+       }
+   </script>
+ </head>
+
+ <body>
+   <!-- DESKTOP -->
+
+   {% block content %}{% endblock %}
+
+   <script src="{% static 'assets/js/script.js' %}"></script>
+ 
+
+</body></html>

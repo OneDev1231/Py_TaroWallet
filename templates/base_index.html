@@ -1,0 +1,172 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiramisu Wallet</title>
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}" />
+    {% block extra_head %}{% endblock %}
+
+
+    <script>
+      async function copyContent(text) {
+   
+         try {
+           await navigator.clipboard.writeText(text);
+           console.log('Content copied to clipboard');
+           /* Resolved - text copied to clipboard successfully */
+         } catch (err) {
+           console.error('Failed to copy: ', err);
+           /* Rejected - text failed to copy to the clipboard */
+         }
+       }
+   </script>
+   
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <img src="{% static 'assets/images/Logo.png' %}" alt="Tiramisu Wallet" />
+        <h2><span>Tiramisu</span> Wallet</h2>
+      </div>
+      <ul class="nav-list">
+        <li><a href="/">Home</a></li>
+        <div class="vertical-bar"></div>
+        <li style="position: relative; cursor: pointer" class="assets-dropdown">
+          <span>Assets</span>
+          <img src="{% static 'assets/images/DownArrow.svg' %}" alt="Down Arrow" width="12" />
+          <div class="route-modal">
+            <a href="{% url 'public-currencies' %}?asset_type=currencies">Currencies</a>
+            <a href="{% url 'public-currencies' %}?asset_type=nft">All NFTs</a>
+            <a href="{% url 'public-collections' %}">NFT Collections</a>
+          </div>
+        </li>
+        <div class="vertical-bar"></div>
+        <li>
+          <a
+            href="https://taro-wallet.gitbook.io/taro-wallet/how-to-use-the-wallet"
+            >Instructions</a
+          >
+        </li>
+        <div class="vertical-bar"></div>
+        <li><a href="{% url 'balances' %}">My wallet</a></li>
+      </ul>
+      <div style="display: flex; align-items: center; gap: 1rem">
+        <a href="{% url 'user-create' %}">
+          <button class="btn sign-up">
+          
+            <h2>Sign Up</h2>
+          
+          </button>
+        </a>
+        <a href="{% url 'login' %}?next={% url 'balances' %}">
+          <button class="outline-btn sign-in">
+            <h2>Sign In</h2>
+          </button>
+        </a>
+        <div class="menu-container">
+          <button class="menu-btn" style="background-color: transparent">
+            <img src="{% static 'assets/images/Menu.svg' %}" alt="Menu" />
+          </button>
+          <div class="menu-modal">
+            <ul>
+              <li>
+                <a href="/">
+                  <img src="{% static 'assets/images/BlueHome.svg' %}" alt="Home" width="22" />
+                  <p>Home</p>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'balances' %}">
+                  <img src="{% static 'assets/images/BlueWallet.svg' %}" alt="Wallet" width="22" />
+                  <p>My wallet</p>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://taro-wallet.gitbook.io/taro-wallet/how-to-use-the-wallet"
+                >
+                  <img
+                    src="{% static 'assets/images/BlueArrow.svg' %}"
+                    alt="Instructions"
+                    width="22"
+                  />
+                  <p>Instructions</p>
+                </a>
+              </li>
+
+              <li>
+                <a href="{% url 'public-currencies' %}?asset_type=currencies">
+                  <img
+                    src="{% static 'assets/images/BlueCoins.svg' %}"
+                    alt="Currencies"
+                    width="22"
+                  />
+                  <p>Currencies</p>
+                </a>
+              </li>
+
+              <li>
+                <a href="{% url 'public-currencies' %}?asset_type=nft">
+                  <img
+                    src="{% static 'assets/images/BlueCollections.svg' %}"
+                    alt="All NFTs"
+                    width="22"
+                  />
+                  <p>All NFTs</p>
+                </a>
+              </li>
+
+              <li>
+                <a href="{% url 'public-collections' %}">
+                  <img
+                    src="{% static 'assets/images/BlueDiamond.svg' %}"
+                    alt="NFT Collections"
+                    width="22"
+                  />
+                  <p>NFT Collections</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Header End -->
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-text">
+        <img src="{% static 'assets/images/logo.png' %}" alt="Tiramisu Wallet" />
+        <h2><span>Tiramisu</span> Wallet</h2>
+        <p>
+          A cryptocurrency wallet for Taproot assets protocol. Send, receive,
+          exchange and store Taproot Assets.
+        </p>
+      </div>
+      <div class="socials-container">
+        <div class="footer-socials">
+          <a href="https://www.youtube.com/channel/UCclJS5Ps018H-YeNVAsmTdw"><img src="{% static 'assets/images/Youtube.svg' %}" alt="Youtube" /></a>
+          <a href="https://t.co/KYpjAKckux"><img src="{% static 'assets/images/Discord.svg' %}" alt="Discord.svg' %}" /></a>
+          <a href="https://twitter.com/TiramisuWallet"><img src="{% static 'assets/images/Twitter.svg' %}" alt="Twitter.svg' %}" /></a>
+          <a href="https://t.me/tiramisuwallet"><img src="{% static 'assets/images/Telegram.svg' %}" alt="Telegram.svg' %}" /></a>
+          <a href="https://www.reddit.com/r/TiramisuWallet/"><img src="{% static 'assets/images/Reddit.svg' %}" alt="Reddit.svg' %}" /></a>
+        </div>
+        <div class="footer-rights">
+          <span>© 2023, All Rights Reserved</span>
+          <span>Privacy Policy | Terms & Conditions</span>
+        </div>
+      </div>
+    </footer>
+    <!-- Footer End -->
+
+    <script src="{% static 'assets/js/script.js' %}"></script>
+
+    
+  </body>
+</html>

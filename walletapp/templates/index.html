@@ -1,0 +1,211 @@
+{% extends "base_index.html" %}
+
+{% load static %}
+{% load filesize_format %}
+{% load humanize %}
+
+{% block title %}
+Tiramisu Wallet - A crypto wallet for Taproot Assets Protocol on Bitcoin 
+{% endblock %}
+
+{% block keywords %}
+Bitcoin, Lightning, Taproot, Assets, Wallet, TAP, protocol, TARO, TAPD, crypto, blockchain, cryptocurrency 
+{% endblock %}
+
+{% block description %}
+Cryptocurreny wallet for Taproot Assets Protocol supporting NFTs and Altcoins on Bitcoin blockchain. Explore, buy, sell or mint assets directly on Bitcoin blockchain in a user-friendly web GUI.
+{% endblock %}
+
+{% block twitter_preview_image %}
+   {% if collection %}
+      https://mainnet.tiramisuwallet.com{{collection.get_preview_image_url}}
+   {% else %}
+      {% static 'assets/images/index_preview.jpg' %}
+   {% endif %}
+{% endblock %}
+
+{% block og_preview_image %}
+   {% if collection %}
+      https://mainnet.tiramisuwallet.com{{collection.get_preview_image_url}}
+   {% else %}
+      {% static 'assets/images/index_preview.jpg' %}
+   {% endif %}
+{% endblock %}
+
+{% block og_secure_url_preview_image %}
+   {% if collection %}
+      https://mainnet.tiramisuwallet.com{{collection.get_preview_image_url}}
+   {% else %}
+      {% static 'assets/images/index_preview.jpg' %}
+   {% endif %}
+{% endblock %}
+
+{% block title_twitter %}
+Tiramisu Wallet - A crypto wallet for Taproot Assets Protocol on Bitcoin 
+{% endblock %}
+
+{% block description_twitter %}
+Tiramisu Wallet - Cryptocurreny wallet for Taproot Assets Protocol supporting NFTs and altcoins on Bitcoin blockchain. Explore, buy, sell or mint Taproot assets in a friendly web GUI.
+{% endblock %}
+
+{% block title_og %}
+Tiramisu Wallet - A crypto wallet for Taproot Assets Protocol on Bitcoin 
+{% endblock %}
+
+{% block description_og %}
+Tiramisu Wallet - Web wallet for Taproot Assets Protocol supporting NFTs and altcoins on Bitcoin blockchain. Explore, buy, sell or mint Taproot Assets in a friendly web GUI.
+{% endblock %}
+
+{% block content %}
+      
+    <main class="main-container">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-content">
+          <div class="hero-star">
+            <div>
+              <img src="{% static 'assets/images/Star.svg' %}" alt="Star" class="star-img" />
+              <img src="{% static 'assets/images/Star.svg' %}" alt="Star" class="star-img" />
+              <img src="{% static 'assets/images/Star.svg' %}" alt="Star" class="star-img" />
+              <img src="{% static 'assets/images/Star.svg' %}" alt="Star" class="star-img" />
+              <img src="{% static 'assets/images/Star.svg' %}" alt="Star" class="star-img" />
+            </div>
+            <p>The #1 Web wallet for Taproot Assets Protocol</p>
+          </div>
+          <div class="hero-text">
+            <h2 class="title">
+              Experience Tiramisu: Your Gateway to Taproot Assets
+            </h2>
+            <h3 class="subtitle">
+              Unlock the Future of Crypto with Our Web Wallet & Exchange. Mint,
+              Trade, Hold, and Explore Altcoins and NFTs on Bitcoin's Layer 2.
+              Test Your TAPD Node.
+            </h3>
+            <h3 class="subtitle">Join Our Thriving Community Today!</h3>
+          </div>
+          <div class="hero-btn">
+            <a href="{% url 'user-create' %}">
+              <button class="btn">
+              
+                <h2>Sign Up</h2>
+             
+              </button>
+            </a>
+
+            <a href="{% url 'login' %}?next={% url 'balances' %}">
+
+              <button class="outline-btn">
+              
+                <h2>Sign In</h2>
+              
+              </button>
+            </a>
+          </div>
+          <img src="{% static 'assets/images/BtcMain.svg' %}" alt="Btc logo" class="hero-img-2" />
+          <hr class="line" id="responsive-line" />
+          <ul class="hero-stats">
+            <li>
+              <img src="{% static 'assets/images/Shield.svg' %}" alt="Shield" />
+              <div>
+                <h2>{{ num_transactions | filesize_format}}+</h2>
+                <p>Transactions</p>
+              </div>
+            </li>
+            <li>
+              <img src="{% static 'assets/images/Wallet.svg' %}" alt="Wallet" />
+              <div>
+                <h2>{{ num_wallets | filesize_format}}+</h2>
+                <p>Wallets</p> 
+              </div>
+            </li>
+          </ul>
+        </div>
+        <img src="{% static 'assets/images/BtcMain.svg' %}" alt="Btc logo" class="hero-img-1" />
+      </section>
+      <!-- Hero End -->
+
+      <hr class="line" />
+
+      <!-- Features -->
+      <section class="features">
+        <div class="features-text">
+          <h2 class="title">Our Mission</h2>
+          <h3 class="subtitle">
+            User friendly Exchange / Wallet for Taproot Assets Protocol on BItcoin blockchain
+          </h3>
+        </div>
+        <div class="features-container">
+          <div class="feature-card">
+            <div class="icon-circle">
+              <img src="{% static 'assets/images/Link.svg' %}" alt="Link" />
+            </div>
+            <p class="description">
+              Taproot Assets Protocol is an Bitcoin on-chain and Lightning protocol that allows for
+              the minting of alternative currencies, stablecoins and
+              collectibles/NFT to be recorded on the Bitcoin blockchain.
+            </p>
+            <a href="https://docs.lightning.engineering/the-lightning-network/taproot-assets/taproot-assets-protocol">Learn more about Taproot assets></a>
+          </div>
+          <div class="feature-card">
+            <div class="icon-circle">
+              <img src="{% static 'assets/images/Connect.svg' %}" alt="Connect" />
+            </div>
+            <p class="description">
+              Taproot Assets protocol leverages Schnorr signatures and Merkle
+              trees to represent digital assets and it relies both on Bitcoin
+              base layer and well as L2 lightning layer. 
+            </p>
+            <a href="https://docs.lightning.engineering/the-lightning-network/taproot-assets/taproot-assets-on-lightning">Taproot Assets on Lightning></a>
+          </div>
+          <div class="feature-card">
+            <div class="icon-circle">
+              <img src="{% static 'assets/images/Node.svg' %}" alt="Node" />
+            </div>
+            <p class="description">
+              Tiramisu Wallet gives users a web interface to interract with
+              Taproot Assets Protocol Deamon (tapd) running on Bitcoin testnet
+              without the need for you to operate a Lightning node.
+            </p>
+            <a href="{% url 'user-create' %}">Create an account ></a>
+          </div>
+        </div>
+      </section>
+      <!-- Features End -->
+
+      <hr class="line" />
+
+      <!-- About -->
+      <section class="about">
+        <img src="{% static 'assets/images/BtcLightning.svg' %}" alt="Wallet" class="about-img" />
+        <div class="about-container">
+          <div class="about-title">
+            <h3 class="subtitle">Tiramisu Wallet is still in Alpha</h3>
+            <h2 class="title">Why choose us</h2>
+          </div>
+
+          <div class="about-benefits">
+            <div class="about-benefit">
+              <img src="{% static 'assets/images/BlueCircle.svg' %}" alt="Check" />
+              <p>We are the first exchange / wallet for Taproot assets</p>
+            </div>
+            <div class="about-benefit">
+              <img src="{% static 'assets/images/BlueCircle.svg' %}" alt="Check" />
+              <p>We are fully open supporting any NFTs or fungible currencies minted on taproot assets</p>
+            </div>
+            <div class="about-benefit">
+              <img src="{% static 'assets/images/BlueCircle.svg' %}" alt="Check" />
+              <p>We will support your creativity by allowing you to mint your own taproot assets</p>
+            </div>
+            <div class="about-benefit">
+              <img src="{% static 'assets/images/BlueCircle.svg' %}" alt="Check" />
+              <p>We support both Liquidity pool trading as well as order-book style trading</p>
+            </div>
+          </div>
+          <a href="{% url 'user-create' %}">
+            <button class="btn"><h2>Sign up Now !</h2></button>
+          </a>
+        </div>
+      </section>
+      <!-- About End -->
+    </main>
+{% endblock %}

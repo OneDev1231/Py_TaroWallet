@@ -1,0 +1,47 @@
+
+
+{% extends "base_generic.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+   Tiramisu Wallet | {{ currencies.name }}
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, {{ currencies.name }}
+{% endblock %}
+
+{% block description %}
+   Currency '{{ currencies.name }}'
+{% endblock %}
+
+{% block content %}
+
+<div class="wallet-bradcrumb">
+    <h2><i class="fas fa-exchange-alt"></i> <a href="{% url 'currencies' %}">Assets</a> / <a href="{{currencies.get_absolute_url}}">{{currencies.name}}</a>  / Asks </h2>
+</div>
+
+<div class="transfer-coin-btn">
+    <a class="active" href="{% url 'orders-asks' currency_pk=currencies.pk %}" data-tab="sent-coin"><i class="fas fa-coins"></i>Asks</a>
+    <a href="{% url 'orders-bids' currency_pk=currencies.pk %}" data-tab="sent-coin"><i class="fas fa-coins"></i>Bids</a>
+  </div>
+  <br>
+
+
+<div class="wallet-transaction clearfix">
+
+      <h2 class="dashboard-title">Asks</h2>
+      {% if listings_list %}
+      {% include 'inc_order.html' with orders=listings_list %}
+      {%else%}
+      <p>There are no orders</p>
+      {%endif%}
+   </div>
+   {% include "inc_paginator.html" %}
+</div>
+
+
+
+{% endblock %}

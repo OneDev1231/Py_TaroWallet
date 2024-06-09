@@ -1,0 +1,129 @@
+{% extends "base_index.html" %}
+
+{% load static %}
+{% load filesize_format %}
+{% load humanize %}
+
+{% block title %}
+Taproot Assets collections on Tiramisu Wallet
+{% endblock %}
+
+{% block keywords %}
+taproot, assets, protocol, NFT, tokens, Bitcoin, lightning, exchange, trade, ordinals, Tiramisu, wallet
+{% endblock %}
+
+{% block description %}
+A list of all taproot assets NFTs listed on Tiramisu wallet. Explore the NFTs in the collection, list, sell, buy or mint NFTs.
+{% endblock %}
+
+{% block twitter_preview_image %}
+   {% if collection %}
+      https://mainnet.tiramisuwallet.com{{collection.get_preview_image_url}}
+   {% else %}
+      {% static 'assets/images/collections_preview.jpg' %}
+   {% endif %}
+{% endblock %}
+
+{% block og_preview_image %}
+   {% if collection %}
+      https://mainnet.tiramisuwallet.com{{collection.get_preview_image_url}}
+   {% else %}
+      {% static 'assets/images/collections_preview.jpg' %}
+   {% endif %}
+{% endblock %}
+
+{% block og_secure_url_preview_image %}
+   {% if collection %}
+      https://mainnet.tiramisuwallet.com{{collection.get_preview_image_url}}
+   {% else %}
+      {% static 'assets/images/collections_preview.jpg' %}
+   {% endif %}
+{% endblock %}
+
+{% block title_twitter %}
+Taproot Assets collections on Tiramisu Wallet
+{% endblock %}
+
+{% block description_twitter %}
+A list of all taproot assets NFTs listed on Tiramisu wallet. Explore the NFTs in the collection, list, sell, buy or mint NFTs.
+{% endblock %}
+
+{% block title_og %}
+Taproot Assets collections on Tiramisu Wallet
+{% endblock %}
+
+{% block description_og %}
+A list of all taproot assets NFTs listed on Tiramisu wallet. Explore the NFTs in the collection, list, sell, buy or mint NFTs.
+{% endblock %}
+
+{% block extra_head %}
+
+<link rel="stylesheet" href="{% static '/css/collections.css' %}" />
+
+{% endblock %}
+
+{% block content %}
+<main class="main-container">
+   <section class="collections">
+     <div class="collections-text">
+       <h2 class="title">NFT Collections</h2>
+       <hr class="line">
+       <div class="collections-description">
+         <h3>Full list of NFT Collection</h3>
+         <p>
+           A list of all taproot assets NFT collections available on Tiramisu
+           wallet.
+         </p>
+       </div>
+     </div>
+     
+     <!-- DESKTOP -->
+     <div class="card-container" id="collectionsCardContainer">
+       <!-- Card List Here -->
+   
+      {% if collections_list %}
+
+         {% for collection in collections_list %}
+            
+            {% include 'collections_inc_collection_public.html' with collection=collection %}
+
+         {% endfor %}
+      {% else %}
+         <p>There are no listings.</p>
+      {% endif %}
+
+     </div>
+     <!-- DESKTOP END -->
+
+     <!-- MOBILE -->
+     <div class="responsive-card-container" id="responsiveCollectionsCardContainer">
+       <!-- Card List Here -->
+       {% if collections_list %}
+
+         {% for collection in collections_list %}
+            
+            {% include 'collections_inc_collection_public_mobile.html' with collection=collection %}
+
+         {% endfor %}
+      {% else %}
+         <p>There are no listings.</p>
+      {% endif %}
+     </div>
+     <!-- MOBILE END -->
+     
+     <div class="page-selector">
+       <button id="prevBtn" onclick="prevPage()">
+         <img src="{% static 'assets/images/ArrowLeft.svg' %}" alt="Previous" width="10">
+         Previous
+       </button>
+       <div class="page-number-selected" id="pageNumber">1</div>
+       <div class="page-number" id="pageNumber">2</div>
+       <button id="nextBtn" onclick="nextPage()">
+         Next
+         <img src="{% static 'assets/images/ArrowRight.svg' %}" alt="Next" width="10">
+       </button>
+     </div>
+   </section>
+ </main>
+
+{% endblock %}

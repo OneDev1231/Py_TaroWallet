@@ -1,0 +1,167 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+
+{% block title %}
+   Tiramisu Wallet | My wallet | Currencies
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol
+{% endblock %}
+
+{% block description %}
+   View my currencies
+{% endblock %}
+
+{% block bread_crumb %}
+  <img
+    src="{% static 'assets/images/PurpleWallet.svg' %}"
+    alt="My Wallet / Currencies"
+    width="32"
+  />
+  <h2>My Wallet / Currencies</h2>
+{% endblock %}
+
+{% block bread_crumb_2 %}
+  <img
+    src="{% static 'assets/images/PurpleWallet.svg' %}"
+    alt="My Wallet / Currencies"
+    width="32"
+  />
+  <h2>My Wallet / Currencies</h2>
+{% endblock %}
+
+{% block content %}
+
+<div class="mywallet-section">
+  <div class="btn-container">
+    <button
+      id="currencyBtn"
+      class="btn"
+      onclick="location.href='{% url 'balances' %}';"
+    >
+      <img src="{% static 'assets/images/Coins.svg' %}" alt="Currencies" width="26" />
+      <h3>Currencies</h3>
+    </button>
+    <button
+      id="nftBtn"
+      class="outline-btn"
+      onclick="location.href='{% url 'balances-nft' %}';"
+    >
+      <img
+        src="{% static 'assets/images/Collections.svg' %}"
+        alt="NFT Collections"
+        width="22"
+      />
+      <h3>NFT Collections</h3>
+    </button>
+  </div>
+  <!-- Currencies Section -->
+  <div class="mywallet-container" id="currency-section">
+    <div class="cards-container" id="currenciesCardContainer">
+      {% if balances_list %}
+        {% for balance in balances_list %}
+          {% include "inc_balance_currency.html" with balance=balance%}
+        {% endfor %}
+
+      {% else %}
+        <p>There are no curriencies in your wallet.</p>
+      {% endif %}
+    </div>
+    <!-- Page Selector -->
+   {% include "inc_paginator.html" %}
+  <!-- Currencies Section end -->
+
+  <!-- NFT Collection Section -->
+  <div class="mywallet-container" id="nft-section" style="display: none">
+    <div class="cards-container" id="nftsCardContainer">
+      <!-- Card List Here -->
+    </div>
+    <!-- Page Selector -->
+    {% include "inc_paginator.html" %}
+    
+  </div>
+  <!-- NFT Collection Section end -->
+</div>
+<br>
+<br>
+
+{% comment %} 
+<div class="wallet-bradcrumb clearfix">
+  <h2><i class="fas fa-wallet"></i> My wallet / Currencies</h2>
+</div>
+
+
+  <div class="wallet-balance-area clearfix">
+    <div class="transfer-coin-btn">
+      <a class="active" href="{% url 'balances' %}" data-tab="sent-coin"><i class="fas fa-coins"></i>Currencies</a>
+      <a href="{% url 'balances-nft' %}" data-tab="receive-coin"><i class="fas fa-gem"></i>NFTs</a>
+    </div>
+    <br>
+
+  {% if balances_list %}
+    {% for balance in balances_list %}
+
+      <div class="wallet-balance-box wallet{{balance.currency.get_color_id}}">
+        <div class="wallet-balance-ico">
+           <a href="{{balance.currency.get_absolute_url}}"> 
+            <img src="{{balance.currency.get_image_url_name}}" onerror="this.onerror=null; this.src='{% static 'assets/images/unknown_currency.png' %}'" alt="{{ balance.currency.name }} currency image">
+           </a>
+        </div>
+        <h3>
+          <a href="{{balance.currency.get_absolute_url}}"> 
+            {{ balance.currency.name }}
+          </a>
+        </h3>
+        
+        <h4>{{ balance.balance }} {{ balance.currency.acronym }}</h4>
+
+        {% if balance.currency.name != 'Bitcoin' %}
+        <div class="my-wallet-address">
+           <span>{{balance.currency.asset_id}}</span>
+            <i id="copy_asset_id_button_{{balance.currency.id}}" class="far fa-copy"></i>
+        </div>
+        <script type="text/javascript">
+          document.getElementById("copy_asset_id_button_{{balance.currency.id}}").onclick = function(){
+            if(copyContent('{{balance.currency.asset_id}}')){
+                // most important step in this whole process
+                return false;
+            }
+          }
+        </script>
+        {%else%}
+        <div class="my-wallet-address">
+          <span>Base currency</span>
+        </div>
+        {%endif%}
+        <br>
+        
+        <div class="wallet-balance-btn clearfix">
+          {% if balance.currency.name != 'Bitcoin' %}
+          <a class="theme-btn wallet-sent-btn" href="{% url 'transaction-send-taro' %}?currency={{balance.currency.name}}"><i class="fas fa-arrow-alt-circle-up"></i> Send</a>
+          <a class="theme-btn" href="{% url 'transaction-receive-taro' %}?currency={{balance.currency.name}}"><i class="fas fa-arrow-alt-circle-down"></i> Receive</a>
+          {%else%}
+          <a class="theme-btn wallet-sent-btn" href="{% url 'transaction-send-btc' %}"><i class="fas fa-arrow-alt-circle-up"></i> Send</a>
+          <a class="theme-btn" href="{% url 'transaction-receive-btc' %}"><i class="fas fa-arrow-alt-circle-down"></i> Receive</a>
+          {%endif%}
+        </div>
+
+
+     </div>
+    {% endfor %}
+
+    {% else %}
+      <p>There are no curriencies in your wallet.</p>
+    {% endif %}
+  
+  </div>
+
+
+  {% include "inc_paginator.html" %} {% endcomment %}
+  
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'assets/js/my-wallet.js' %}"></script>
+{% endblock %}

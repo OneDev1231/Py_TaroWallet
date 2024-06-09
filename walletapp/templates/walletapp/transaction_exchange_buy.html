@@ -1,0 +1,77 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+   Tiramisu Wallet | Deposit funds
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, TAP, receive
+{% endblock %}
+
+{% block description %}
+    Deposit funds into your Tiramisu Wallet
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+   <div class="wallet-bradcrumb">
+      <h2><i class="fas fa-wallet"></i> <a href="{% url 'orders-my' %}">Trading</a> / Buy Currency </h2>
+ </div>
+
+ <div class="tranfer-coin-box">
+
+  <div class="row">
+     <div class="col-xl-7">
+        <div class="transfer-coin-left-box">
+
+           <div class="transfer-coin-content">
+              <div class="transfer-coin-content-box" id="sent-coin">
+
+                <p>
+                  Select the Taproot Assets Protocol asset you want to buy and how much of the currency you want to buy. Note that 
+                  therre is a limit on the amount of assets that can be sold and bought from the LP.
+                </p>
+
+                {% if form.errors %}
+                    <p style="color:red">Errors identified, please fix the issues below.</p>
+                {% endif %}
+
+                <form action="{% url 'buy-currency-asset' %}" method="post" autocomplete="off">
+                  {% csrf_token %}
+                  {% for field in form %}
+                  
+                  <div class="theme-input-box">
+                    <label>{{ field.label_tag }}</label>
+                    {{ field.errors }}
+                    {{ field }}
+                    <p>{{ field.help_text }}</p>
+                  </div>
+        
+                  {% endfor %}
+
+                  <br>
+
+                   <div class="transfer-coin-button">
+                      <button class="theme-btn">Buy assets</button>
+                   </div>
+                   
+                </form>
+
+              </div>
+
+           </div>
+        </div>
+     </div>
+
+     <div class="col-xl-5">
+         {% include "inc_wallet_overview.html" %}
+   </div>
+     </div>
+
+  </div>
+</div>
+
+
+{% endblock %}

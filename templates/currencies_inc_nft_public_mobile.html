@@ -1,0 +1,34 @@
+{% load static %}
+{% load humanize %}
+
+<div class="responsive-card">
+  <div class="image-container">
+    <img src="{{currency.get_image_url_name}}" alt="No image">
+  </div>
+  <div class="text-container">
+    <div class="card-text">
+      <a href="{{currency.get_absolute_public_url}}">
+        <h4>{{currency.name | truncatechars:30}}</h4>
+      </a>
+      <p>{{currency.description | truncatechars:100}}</p>
+    </div>
+    <div class="card-content">
+      <div class="card-features">
+        <div class="card-feature">
+          <p>{{currency.orders_num}}</p>
+          <img src="{% static 'assets/images/Contract.svg' %}" alt="Light" width="12">
+        </div>
+        <div class="card-feature">
+          <p>{{currency.holders_num}}</p>
+          <img src="{% static 'assets/images/User.svg' %}" alt="Contract" width="12">
+        </div>
+      </div>
+      <a href="{% url 'buy-currency-asset' %}?currency={{currency.name}}" class="card-btn">
+        <h3>
+          <img src="{% static 'assets/images/DarkBlueWallet.svg' %}" alt="Wallet" width="14">
+          BUY
+        </h3>
+      </a>
+    </div>
+  </div>
+</div>

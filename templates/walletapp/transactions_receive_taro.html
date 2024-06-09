@@ -1,0 +1,85 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+   Tiramisu Wallet | Deposit funds
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, TAP, receive
+{% endblock %}
+
+{% block description %}
+    Deposit funds into your Tiramisu Wallet
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+   <div class="wallet-bradcrumb">
+    <h2><i class="fas fa-history"></i> <a href="{% url 'transactions' %}">Transactions</a> / Receive Taproot Asset</h2>
+ </div>
+
+ <div class="tranfer-coin-box">
+
+   <div class="transfer-coin-btn">
+      <a href="{% url 'transaction-receive-btc' %}"><i class="fab fa-btc"></i>Receive BTC</a>
+      <a href="{% url 'transaction-receive-btc-lnd' %}"><i class="fas fa-bolt"></i>Receive BTC Lightning</a>
+      <a class="active" href="{% url 'transaction-receive-taro' %}"><i class="fas fa-coins"></i>Receive Taproot Asset</a>
+   </div>
+   <br>
+
+
+  <div class="row">
+     <div class="col-xl-7">
+        <div class="transfer-coin-left-box">
+
+           <div class="transfer-coin-content">
+              <div class="transfer-coin-content-box" id="sent-coin">
+
+                <p>
+                  Deposit Taproot Assets into your wallet. This form will generate a TAP invoice. Once the invoice is generated please pay it and wait for the transaction to be processed. 
+                  Specify the currency and the amount to generate the invoice for.
+                </p>
+
+                {% if form.errors %}
+                    <p style="color:red">Errors identified, please fix the issues below.</p>
+                {% endif %}
+
+                <form action="{% url 'transaction-receive-taro' %}" method="post" autocomplete="off">
+                  {% csrf_token %}
+                  {% for field in form %}
+                  
+                  <div class="theme-input-box">
+                    <label>{{ field.label_tag }}</label>
+                    {{ field.errors }}
+                    {{ field }}
+                    <p>{{ field.help_text }}</p>
+                  </div>
+        
+                  {% endfor %}
+
+                  <br>
+
+                   <div class="transfer-coin-button">
+                      <button class="theme-btn">Generate invoice</button>
+                   </div>
+                   
+                </form>
+
+              </div>
+
+           </div>
+        </div>
+     </div>
+
+     <div class="col-xl-5">
+         {% include "inc_wallet_overview.html" %}
+   </div>
+     </div>
+
+  </div>
+</div>
+
+
+{% endblock %}

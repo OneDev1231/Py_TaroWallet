@@ -1,0 +1,50 @@
+{% load static %}
+{% load humanize %}
+
+<div class="card">
+  <a class="image-container" href="{{currency.get_absolute_public_url}}" style="padding: 5%; display: block;">
+    
+      <img src="{{currency.get_image_url_name}}" alt="No image">
+    
+  </a>
+  <div class="card-text">
+    <a href="{{currency.get_absolute_public_url}}">
+      <h4>{{currency.name | truncatechars:30}}</h4>
+    </a>
+    <p>{{currency.description | truncatechars:100}}</p>
+  </div>
+  <div class="card-description">
+    <div class="card-chart">
+      <p class="card-percent">{{currency.price_change}}%</p>
+      <img src="{% url 'get-chart-image' currency_pk=currency.id %}" alt="chart" width="26">
+    </div>
+    <div class="card-mc">
+      <p>Current market price</p>
+      <span>
+        {% if currency.get_lp_listing %}
+          {{currency.get_lp_listing.get_price_sat |floatformat:4|intcomma }} SAT / 1 {{currency.acronym}}
+        {% else %}
+          Unknown
+        {% endif %}
+      </span>
+    </div>
+  </div>
+  <div class="card-features">
+    <div class="card-feature">
+      <p>{{currency.holders_num}}</p>
+      <img src="{% static 'assets/images/User.svg' %}" alt="User" width="14">
+    </div>
+    <div class="card-feature">
+      <p>{{currency.transaction_num}}</p>
+      <img src="{% static 'assets/images/Light.svg' %}" alt="Light" width="12">
+    </div>
+    <div class="card-feature">
+      <p>{{currency.orders_num}}</p>
+      <img src="{% static 'assets/images/Contract.svg' %}" alt="Contract" width="12">
+    </div>
+  </div>
+  <a href="{% url 'buy-currency-asset' %}?currency={{currency.name}}" class="card-btn">
+    <img src="{% static 'assets/images/Buy.svg' %}" alt="Buy" width="12">
+    <h2>BUY</h2>
+  </a>
+</div>

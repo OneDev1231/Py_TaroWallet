@@ -1,0 +1,185 @@
+{% extends "base_generic.html" %}
+
+{% load humanize %}
+
+{% block title %}
+   Tiramisu Wallet | Transaction #{{transactions.id}}
+{% endblock %}
+
+{% block keywords %}
+   Wallet, Taproot Assets Protocol, transaction
+{% endblock %}
+
+{% block description %}
+    Detail of transaction #{{transactions.id}}
+{% endblock %}
+
+{% block content %}
+
+{% if transactions.status in 'waiting_for_meta_data,exchange_started,internal_stated,tx_created,minting,minting_submitted,placeholder_fee,outbound_invoice_received,inbound_invoice_generated,inbound_invoice_waiting_for,lnd_outbound_invoice_received,lnd_inbound_invoice_generated,lnd_inbound_invoice_waiting_for' %}
+<script>
+  setInterval(function() {
+    window.location.reload();
+  }, 10000); 
+</script>
+{% endif %}
+
+<div class="wallet-bradcrumb">
+  <h2><i class="fas fa-history"></i> <a href="{% url 'transactions' %}">Transactions</a> / Transaction detail</h2>
+</div>
+
+<div class="wallet-transaction clearfix">
+
+   <div id="loading" style="display: block;">
+      <p style="font-size: 80px; text-align: center;"><i class="{{transactions.get_big_status_image_class}}"></i></p>
+      <p style="text-align: center;">{{ transactions.get_status_display }}</p>
+   </div>
+
+   <br>
+  <div class="wallet-transaction-box clearfix">
+
+    <div 
+      class="wallet-transaction-ico {% if transactions.direction == 'inbound' and not transactions.is_pending and not transactions.is_error %} wallet-Withdrawal {% endif %}" 
+      {% if transactions.is_error %}
+        , style="background-color: #CB356B;"
+      {% elif transactions.is_pending %}
+        , style="background-color: #968c83;"
+      {% endif %}
+      >
+      <i class="{{transactions.get_small_status_image_class}}"></i>
+    </div>
+
+     <div class="wallet-transaction-inner clearfix">
+       <div class="wallet-transaction-name">
+        <h3>{{transactions.get_description}}</h3>
+          <span><a href="{{ transactions.currency.get_absolute_url }}">
+            {%if transactions.currency.is_nft %}{{ transactions.currency.name }}{% else %}{{ transactions.currency.acronym }}{% endif %}
+          </a></span>
+       </div>
+
+       
+
+       <div class="coin-wallet-date text-center">
+          <span>Date</span>
+          <h3><span data-toggle="tooltip" data-placement="top" title="{{ transactions.created_timestamp }}">{{transactions.created_timestamp | naturaltime}}</span></h3>
+       </div>
+
+       {% if transactions.invoice_inbound and transactions.status in 'inbound_invoice_generated,lnd_inbound_invoice_generated'%}
+
+      <div class="coin-wallet-date text-center">
+        <button data-toggle="modal" data-target="#qr_code_modal" class="theme-btn"><i class="fas fa-qrcode"></i> QR Code</button>
+      </div>
+
+      <div id="qr_code_modal" class="modal fade theme-popup" role="dialog" style="display: none;" aria-hidden="true">
+          <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-body">
+                  <!-- <h2 class="dashboard-title">Create Wallet</h2> -->
+                  <button type="button" class="close" data-dismiss="modal"><i class="fas fa-times"></i></button>
+                  <div class="transfer-coin-content-box">
+                     <div class="payment-invoice-content">
+                        <div class="invoice-warning">
+                           <p><span class="invoice-text"><i class="fas fa-exclamation-circle"></i></span> After scanning the QR code please carefully validate the amount and the destination address.</p>
+                        </div>
+                        <div class="invoice-qr-img">
+                           <img id="copy" data-clipboard-text="MgzB63dVsdbshsbhsbsbhsbsdhsdhvs" src="{% url 'qr-code-invoice' transaction_pk=transactions.id %}" data-original-title="" alt="Qr Code">
+                        </div>
+                        <div class="wallet-btn text-right">
+                           <button class="theme-btn cancel-btn" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+              </div>
+          </div>
+      </div>
+
+      {% endif %}
+
+       <div class="wallet-transaction-balance text-right">
+         <span>Amount</span>
+         <h3>{{ transactions.amount }} <a href="{{ transactions.currency.get_absolute_url }}">
+          {%if transactions.currency.is_nft %}<i class="fas fa-gem"></i>{% else %}{{ transactions.currency.acronym }}{% endif %}
+        </a>
+       </div>
+     </div>
+
+
+     {% if transactions.invoice_inbound or transactions.invoice_outbound or transactions.tx_id %}
+      <div class="wallet-trx-id">
+        <p class="trx-id">
+          
+          {% if transactions.tx_id %}
+          <span>
+            <span>Tx id:</span>
+
+            <a href="https://live.blockcypher.com/btc/tx/{{transactions.tx_id}}/">
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+
+            {{ transactions.tx_id | safe }} 
+          </span>
+          
+          {% endif %}
+
+
+          {% if transactions.invoice_inbound or transactions.invoice_outbound %}
+          {% if transactions.invoice_inbound %}
+          <span>
+            <span>Invoice:</span>
+
+            <a href="" id="copy_invoice_button_{{transactions.id}}" target="_blank">
+              <i class="fas fa-copy"></i>
+            </a>
+
+            {{ transactions.invoice_inbound | safe }} 
+          </span>
+
+          <script type="text/javascript">
+            document.getElementById("copy_invoice_button_{{transactions.id}}").onclick = function(){
+              if(copyContent('{{transactions.invoice_inbound}}')){
+                  // most important step in this whole process
+                  return false;
+              }
+            }
+          </script>
+            
+          {% else %}
+            <span>
+              <span>Invoice:</span>
+
+              <a href="" id="copy_invoice_button_{{transactions.id}}" target="_blank">
+                <i class="fas fa-copy"></i>
+              </a>
+
+              {{ transactions.invoice_outbound | safe }} 
+            </span>
+
+            <script type="text/javascript">
+              document.getElementById("copy_invoice_button_{{transactions.id}}").onclick = function(){
+                if(copyContent('{{transactions.invoice_outbound}}')){
+                    // most important step in this whole process
+                    return false;
+                }
+              }
+            </script>
+
+            {% endif %}
+          {% endif %}
+
+        </p>
+      </div>
+      {% endif %}
+
+
+      <p class="theme-edit-note">Note: <span><span>{{ transactions.description | truncatechars:500 }} </span></span></p>
+
+      {% if transactions.status == 'error' %}
+      <p class="theme-edit-note" style="color: red">Error: <span><span>{{ transactions.status_description | truncatechars:500 }} </span></span></p>
+      {% endif %}
+
+  </div>
+
+{% endblock %}
+
